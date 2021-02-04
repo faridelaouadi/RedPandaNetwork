@@ -1,0 +1,25 @@
+div.gallery {
+    margin: 20px;
+    border: 2px solid #ccc;
+    float: left;
+    width: 150px;
+    border-radius: 25px;
+  }
+
+  div.gallery:hover {
+    border: 2px solid rgb(209, 119, 16);
+    border-radius: 25px;
+  }
+
+  div.gallery img {
+    width: 100%;
+    height: auto;
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+  
+  }
+
+  div.desc {
+    padding: 15px;
+    text-align: center;
+  }

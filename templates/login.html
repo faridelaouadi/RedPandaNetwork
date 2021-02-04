@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Red Panda Network - Login</title>
+  
+   <!-- loader-->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.3/pace-theme-default.min.css" integrity="sha512-Y9zsaofS9we8rSZHHp2aJKYt75Ebi0KHBLAJCEs20yZhDysE5knyKk6ISMxfM/ax9I/Bk/OLBqdfGupez5POfQ==" crossorigin="anonymous" />
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.3/pace.min.js" integrity="sha512-TJX3dl0dqF2pUpKKtV60kECO4y8blw4ZPIZNEkfUnFepRKfx4nfiI37IqFa1TEsRQJkPGTIK4BBJ2k/lmsK7HA==" crossorigin="anonymous"></script>
+   <!-- Simple bar-->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/5.3.0/simplebar.min.css" integrity="sha512-uZTwaYYhJLFXaXYm1jdNiH6JZ1wLCTVnarJza7iZ1OKQmvi6prtk85NMvicoSobylP5K4FCdGEc4vk1AYT8b9Q==" crossorigin="anonymous" />
+   <!--favicon-->
+   <link rel="icon" href="../static/images/favicon.ico" type="image/x-icon">
+   <!-- Vector CSS -->
+   <link href="../static/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet"/>
+   <!-- animate CSS-->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" />
+   <!-- Icons CSS-->
+   <link href="../static/css/icons.css" rel="stylesheet" type="text/css"/>
+   <!-- Bootstrap core CSS-->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">  
+ 
+  <!-- Custom Style-->
+  <link href="../static/css/app-style.css" rel="stylesheet"/>
+  
+</head>
+
+<body class="bg-theme bg-theme4">
+
+<!-- start loader -->
+   <div id="pageloader-overlay" class="visible incoming"><div class="loader-wrapper-outer"><div class="loader-wrapper-inner" ><div class="loader"></div></div></div></div>
+<!-- end loader -->
+
+<!-- Start wrapper-->
+ <div id="wrapper">
+
+ <div class="loader-wrapper"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
+	<div class="card card-authentication1 mx-auto my-5">
+		<div class="card-body">
+		 <div class="card-content p-2">
+      <div class="text-center">
+        <img src="../static/images/logo.png" style="width: 40%; height: 40%;" alt="logo icon">
+      </div>
+      
+      
+      <div class="card-title text-uppercase text-center py-3">Sign In</div>
+      
+      <form action="{{ url_for('login') }}" method="post" id="loginForm" autocomplete="off">
+       <!--Username element-->
+       <div class="form-group">
+       <label for="exampleInputUsername" class="sr-only">Username</label>
+        <div class="position-relative has-icon-right">
+         <input type="text" name="username" form="loginForm" class="form-control input-shadow" placeholder="Enter Username" required>
+         <div class="form-control-position">
+           <i class="icon-user"></i>
+         </div>
+        </div>
+       </div>
+       <!--Password-->
+       <div class="form-group">
+       <label for="exampleInputPassword" class="sr-only">Password</label>
+        <div class="position-relative has-icon-right">
+         <input type="password" name="password" form="loginForm" class="form-control input-shadow" placeholder="Enter Password" required>
+         <div class="form-control-position">
+           <i class="icon-lock"></i>
+         </div>
+        </div>
+       </div>
+       <!--Remember me box-->
+      <div class="form-row">
+      <div class="form-group col-6">
+        <div class="icheck-material-white">
+         <input type="checkbox" id="user-checkbox" checked="" />
+         <label for="user-checkbox">Remember me</label>
+       </div>
+      </div>
+      
+      </div>
+      
+      <button class="btn btn-light btn-block" type="submit" form="loginForm">Sign In</button>
+      </form>
+       
+		   </div>
+		  </div>
+		  <div class="card-footer text-center py-3">
+		    <a href='{{ auth_url }}'><img style="height: 50px;" src="../static/images/signin.svg" alt="Logo"></a>
+		  </div>
+	     </div>
+	
+	</div><!--wrapper-->
+	
+  <!-- Bootstrap core JavaScript-->
+  <script src="../static/js/jquery.min.js"></script>
+  <script src="../static/js/popper.min.js"></script>
+  <script src="../static/js/bootstrap.min.js"></script>
+	
+  <!-- sidebar-menu js -->
+  <script src="../static/js/sidebar-menu.js"></script>
+  
+  <!-- Custom scripts -->
+  <script src="../static/js/app-script.js"></script>
+  
+</body>
+</html>
