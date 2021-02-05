@@ -15,7 +15,6 @@ def index():
         return redirect(url_for("login"))
     return redirect(url_for("home"))
 
-
 @app.route("/login")
 def login():
     session["state"] = str(uuid.uuid4())
@@ -88,7 +87,7 @@ def _build_auth_url(authority=None, scopes=None, state=None):
     return _build_msal_app(authority=authority).get_authorization_request_url(
         scopes or [],
         state=state or str(uuid.uuid4()),
-        redirect_uri=url_for("authorized", _external=True))
+        redirect_uri=url_for("authorized", _external=True, _scheme='https'))
 
 def _get_token_from_cache(scope=None):
     cache = _load_cache()  # This web app maintains one cache per session
@@ -102,3 +101,7 @@ def _get_token_from_cache(scope=None):
 if __name__ == "__main__":
     app.run(debug=True)
 
+
+
+
+#keeping this here http://localhost:5000/getAToken
