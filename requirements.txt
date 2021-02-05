@@ -1,5 +1,7 @@
 app-config==1.0.1
+beautifulsoup4==4.9.3
 boto==2.49.0
+bs4==0.0.1
 cachelib==0.1.1
 certifi==2020.12.5
 cffi==1.14.4
@@ -17,5 +19,6 @@ pycparser==2.20
 PyJWT==1.7.1
 requests==2.25.1
 six==1.15.0
+soupsieve==2.1
 urllib3==1.26.2
 Werkzeug==1.0.1
