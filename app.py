@@ -4,6 +4,9 @@ from flask import Flask, render_template, session, request, redirect, url_for
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 import app_config
+from werkzeug.utils import secure_filename
+import os
+import time
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -45,6 +48,27 @@ def home():
 def upload():
     return render_template("upload_pics.html",user=session["user"], value="upload")
 
+@app.route('/uploading_images', methods=["POST"])
+def uploading_images():
+
+    print("WE have been invoked")
+    camera_ID = request.form.get('camera_ID')
+    print(f"the camera is is {camera_ID}")
+    file = request.files['file']
+    if file:
+        filename = secure_filename(file.filename)
+        filepath = os.path.join('./static/', f"uploads/{filename}")
+        file.save(filepath)
+    #time.sleep(3) simulating the time it would take to do inference on an image
+
+    #run inference 
+    #upload to blob storage 
+    #add entry to database 
+    #clear uploads folder so server is always optimised
+
+    return redirect(url_for('upload'))
+
+
 @app.route('/viewPics')
 def viewPics():
     return render_template("view_pics.html",user=session["user"], value="view")
@@ -67,8 +91,6 @@ def authorized():
         session["user"] = result.get("id_token_claims")
         _save_cache(cache)
     return redirect(url_for("index"))
-
-
 
 def _load_cache():
     cache = msal.SerializableTokenCache()
