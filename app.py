@@ -7,6 +7,7 @@ import app_config
 from werkzeug.utils import secure_filename
 import os
 import time
+from predict import isRedPanda
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -44,29 +45,31 @@ def logout():
 def home():
     return render_template("dashboard.html",user=session["user"], value="home")
 
-@app.route('/upload')
+@app.route('/upload', methods=["GET","POST"])
 def upload():
-    return render_template("upload_pics.html",user=session["user"], value="upload")
+    message = ''
+    if request.method == 'POST':
+        print("WE have been invoked")
+        camera_ID = request.form.get('camera_ID')
+        print(f"the camera is is {camera_ID}")
+        file = request.files['file']
+        if file:
+            filename = secure_filename(file.filename)
+            filepath = os.path.join('./static/', f"uploads/{filename}")
+            file.save(filepath)
+        redPanda = isRedPanda(filepath)
+        if redPanda:
+            message = "Red Panda Identified"
+        else:
+            message = "Red Panda NOT Identified"
+    
+        #run inference 
+        #upload to blob storage 
+        #add entry to database 
+        #clear uploads folder so server is always optimised
 
-@app.route('/uploading_images', methods=["POST"])
-def uploading_images():
+    return render_template("upload_pics.html", message=message, user=session["user"], value="upload")
 
-    print("WE have been invoked")
-    camera_ID = request.form.get('camera_ID')
-    print(f"the camera is is {camera_ID}")
-    file = request.files['file']
-    if file:
-        filename = secure_filename(file.filename)
-        filepath = os.path.join('./static/', f"uploads/{filename}")
-        file.save(filepath)
-    #time.sleep(3) simulating the time it would take to do inference on an image
-
-    #run inference 
-    #upload to blob storage 
-    #add entry to database 
-    #clear uploads folder so server is always optimised
-
-    return redirect(url_for('upload'))
 
 
 @app.route('/viewPics')
