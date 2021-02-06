@@ -8,14 +8,14 @@ Background
 
 Current Progress
 ----------------
-![Alt Text](https://giphy.com/gifs/V5pTpVD9gUuxQdMmqL/html5)
+![Alt Text](https://media.giphy.com/media/V5pTpVD9gUuxQdMmqL/giphy.gif)
 
 - User Authentication using Azure Active Directory
 - Web App Design adhering to Don Norman's design principles and Preece's Interaction design principles
 - Azure map with clickable icons for camera traps 
 - Web scraper to gather training data for red panda classifier (scrape.py)
 - Red panda classifier using https://www.customvision.ai/ and script for inference
-- Web app hosted on Azure using Azure app service (https://redpandanetwork.azurewebsites.net/home)
+- Web app hosted on Azure using Azure app service (https://redpandanetwork.azurewebsites.net/)
 - CI/CD workflow using Github and Azure Pipelines 
 
 Backlog 
