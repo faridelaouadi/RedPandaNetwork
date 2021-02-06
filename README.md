@@ -1,3 +1,6 @@
+[![Build Status](https://clt-a88b6d82-2b5e-4b58-bba9-555322fe0d27.visualstudio.com/RedPandaNetwork/_apis/build/status/faridelaouadi.RedPandaNetwork?branchName=master)](https://clt-a88b6d82-2b5e-4b58-bba9-555322fe0d27.visualstudio.com/RedPandaNetwork/_build/latest?definitionId=1&branchName=master)
+
+
 ![](rpn_dashboard.png)
 
 Background
