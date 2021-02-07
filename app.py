@@ -48,27 +48,30 @@ def home():
 @app.route('/upload', methods=["GET","POST"])
 def upload():
     message = ''
+    true_positives = 0
+    total_images = 0
+    false_positives = 0
     if request.method == 'POST':
-        print("WE have been invoked")
         camera_ID = request.form.get('camera_ID')
-        print(f"the camera is is {camera_ID}")
-        file = request.files['file']
-        if file:
+        uploaded_files = request.files.getlist("file")
+        total_images = len(uploaded_files)
+        for file in uploaded_files:
             filename = secure_filename(file.filename)
             filepath = os.path.join('./static/', f"uploads/{filename}")
             file.save(filepath)
-        redPanda = isRedPanda(filepath)
-        if redPanda:
-            message = "Red Panda Identified"
-        else:
-            message = "Red Panda NOT Identified"
+            redPanda = isRedPanda(filepath)
+            if redPanda:
+                true_positives += 1
+        message = "Batch Report"
+        true_positives=int((true_positives/total_images)*100)
+        false_positives = 100 - true_positives
     
         #run inference 
         #upload to blob storage 
         #add entry to database 
         #clear uploads folder so server is always optimised
 
-    return render_template("upload_pics.html", message=message, user=session["user"], value="upload")
+    return render_template("upload_pics.html",message=message,true_positives=true_positives,false_positives=false_positives,  total_images=total_images, user=session["user"], value="upload")
 
 
 

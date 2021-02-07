@@ -22,7 +22,7 @@
         <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label">Choose File</label>
             <div class="col-lg-9">
-                <input class="form-control" form="upload_images_form" type="file" name=file required>
+                <input class="form-control" form="upload_images_form" type="file" name=file multiple="" required>
             </div>
         </div>
         
@@ -42,7 +42,7 @@
           </div>
             <div class="media-body text-left ml-3">
               <div class="progress-wrapper">
-                <p>Total Images : 2</p>
+                <p>Total Images : {{total_images}}</p>
                 
                </div>                   
            </div>
@@ -52,9 +52,9 @@
           <div><img src="./static/images/logo.png" class="skill-img" alt="skill img"></div>
             <div class="media-body text-left ml-3">
               <div class="progress-wrapper">
-                <p>True Positives : 1<span class="float-right">50%</span></p>
+                <p>True Positives  <span class="float-right">{{true_positives}}%</span></p>
                 <div class="progress" style="height: 5px;">
-                 <div class="progress-bar" style="width:50%"></div>
+                 <div class="progress-bar" style="width: {{true_positives}}%"></div>
                 </div>
                </div>                   
            </div>
@@ -64,9 +64,9 @@
           <div><img src="./static/images/logo.png" class="skill-img" alt="skill img"></div>
             <div class="media-body text-left ml-3">
               <div class="progress-wrapper">
-                <p>False Positives: 1<span class="float-right">50%</span></p>
+                <p>False Positives <span class="float-right">{{false_positives}}%</span></p>
                 <div class="progress" style="height: 5px;">
-                 <div class="progress-bar" style="width:50%"></div>
+                 <div class="progress-bar" style="width:{{false_positives}}%"></div>
                 </div>
                </div>                   
            </div>
