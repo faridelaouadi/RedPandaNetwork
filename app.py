@@ -49,22 +49,15 @@ def logout():
 def home():
     return render_template("dashboard.html",user=session["user"], value="home")
 
-def isRedPanda(file):
-    filename = secure_filename(file.filename)
-    filepath = os.path.join('./static/', f"uploads/{filename}")
-    file.save(filepath)
-    #inclding the latest iteration which is pretty accurate
-    url = "https://redpandaclassifier.cognitiveservices.azure.com/customvision/v3.0/Prediction/22689ca4-d96e-414f-8e9a-b913f7626f15/classify/iterations/Iteration3/image"
-    headers={'content-type':'application/octet-stream','Prediction-Key':'de5c1effa9b9486b8ea2fd665faf461a'}
-    r =requests.post(url,data=open(filepath,"rb"),headers=headers)
-    response = r.json()
-    predictions = response['predictions']
-    #the predictions always come in the format of "prediction first" so predictions[i] is what the classifier preidcted
-    if predictions[0]['tagName'][0] == "-":
-        #not panda
-        return False
-    else:
-        return True
+def break_up_filepaths(filepaths,divisor):
+    number_of_lists = ( len(filepaths) // divisor ) + 1# 11//5 = 2
+    list_of_lists = []
+    counter = 0
+    for i in range(number_of_lists):
+        sub_list = filepaths[counter:counter+divisor]
+        list_of_lists.append(sub_list)
+        counter += divisor
+    return list_of_lists
 
 @app.route('/upload', methods=["GET","POST"])
 def upload():
@@ -83,7 +76,13 @@ def upload():
             file.save(filepath)
             filepaths.append(filepath)
         
-        results = asyncio.run(main(filepaths))
+        results = []
+        list_of_lists = break_up_filepaths(filepaths,4) #break up the filepaths into groups of 4
+        for filepaths in list_of_lists:
+            results = results + asyncio.run(main(filepaths))
+            time.sleep(2) #wait 2 seconds before another call
+        
+        
         #NOTE TO SELF --- THE PRICING TIER YOU ARE ON IN CUSTOMVISION.AI HAS A LIMIT OF 10 CALLS A SECOND!!!
 
         message = "Batch Report"
