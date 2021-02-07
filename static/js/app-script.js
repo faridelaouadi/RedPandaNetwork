@@ -162,3 +162,8 @@ function rotateCard(btn){
       $card.addClass('hover');
   }
 }
+
+function loading(){
+  $("#loading").show();
+  $("#wrapper").hide();       
+}

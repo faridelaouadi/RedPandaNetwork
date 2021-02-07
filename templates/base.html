@@ -24,12 +24,13 @@
   <link href="../static/css/app-style.css" rel="stylesheet"/>
   <link href="../static/css/view_pics.css" rel="stylesheet"/>
   <link href="../static/css/autocomplete.css" rel="stylesheet"/>
+  <link href="../static/css/loading.css" rel="stylesheet"/>
 
-
-  
 </head>
 
 <body class="bg-theme bg-theme3">
+
+  <div id="loading"></div>
  
 <!-- Start wrapper-->
  <div id="wrapper" class="toggled">
@@ -185,17 +186,11 @@
   <script src="static/js/azureMap.js"></script>
   <link rel="stylesheet" href="static/css/azureMap.css">
 
-  <!--
+  <!--Add this again when you add the multiple upload thing
   <script src="static/js/image-uploader.js"></script>-->
 
   <!--JS for autocomplete textbox -->
   <script src="../static/js/autocomplete.js"></script>
-  
-  <script>
-    $(window).on("load",function(){
-      console.log("WE ARE LOADING")
-    });
-  </script>
   
   
 </body>

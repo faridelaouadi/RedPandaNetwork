@@ -2,6 +2,8 @@
 
 {% block content %}
 
+
+
   <div class="col-lg-12">
     <div class="card">
        <div class="card-body">
@@ -27,13 +29,50 @@
         <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label"></label>
             <div class="col-lg-9">
-                <input type="submit" form="upload_images_form" class="btn btn-light btn-round px-5" style="float: right;" value="Upload Image">
+                <input type="submit" form="upload_images_form" class="btn btn-light btn-round px-5" style="float: right;" value="Upload Image" onclick="loading();">
             </div>
         </div>
     </form>
 
     {% if message %}
-    <p style="color:orange;">{{message}}</p>
+    <div class="card-body border-top border-light">
+        <div class="media align-items-center">
+          <div>
+              <img src="./static/images/total_images.png" class="skill-img" alt="skill img">
+          </div>
+            <div class="media-body text-left ml-3">
+              <div class="progress-wrapper">
+                <p>Total Images : 2</p>
+                
+               </div>                   
+           </div>
+         </div>
+         <hr>
+         <div class="media align-items-center">
+          <div><img src="./static/images/logo.png" class="skill-img" alt="skill img"></div>
+            <div class="media-body text-left ml-3">
+              <div class="progress-wrapper">
+                <p>True Positives : 1<span class="float-right">50%</span></p>
+                <div class="progress" style="height: 5px;">
+                 <div class="progress-bar" style="width:50%"></div>
+                </div>
+               </div>                   
+           </div>
+         </div>
+          <hr>
+         <div class="media align-items-center">
+          <div><img src="./static/images/logo.png" class="skill-img" alt="skill img"></div>
+            <div class="media-body text-left ml-3">
+              <div class="progress-wrapper">
+                <p>False Positives: 1<span class="float-right">50%</span></p>
+                <div class="progress" style="height: 5px;">
+                 <div class="progress-bar" style="width:50%"></div>
+                </div>
+               </div>                   
+           </div>
+         </div>
+         
+     </div>
     {% endif %}
 
           <!--
