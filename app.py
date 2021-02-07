@@ -7,7 +7,11 @@ import app_config
 from werkzeug.utils import secure_filename
 import os
 import time
-from predict import isRedPanda
+from async_predict import *
+import asyncio
+
+import requests
+import json
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -45,6 +49,23 @@ def logout():
 def home():
     return render_template("dashboard.html",user=session["user"], value="home")
 
+def isRedPanda(file):
+    filename = secure_filename(file.filename)
+    filepath = os.path.join('./static/', f"uploads/{filename}")
+    file.save(filepath)
+    #inclding the latest iteration which is pretty accurate
+    url = "https://redpandaclassifier.cognitiveservices.azure.com/customvision/v3.0/Prediction/22689ca4-d96e-414f-8e9a-b913f7626f15/classify/iterations/Iteration3/image"
+    headers={'content-type':'application/octet-stream','Prediction-Key':'de5c1effa9b9486b8ea2fd665faf461a'}
+    r =requests.post(url,data=open(filepath,"rb"),headers=headers)
+    response = r.json()
+    predictions = response['predictions']
+    #the predictions always come in the format of "prediction first" so predictions[i] is what the classifier preidcted
+    if predictions[0]['tagName'][0] == "-":
+        #not panda
+        return False
+    else:
+        return True
+
 @app.route('/upload', methods=["GET","POST"])
 def upload():
     message = ''
@@ -55,25 +76,25 @@ def upload():
         camera_ID = request.form.get('camera_ID')
         uploaded_files = request.files.getlist("file")
         total_images = len(uploaded_files)
+        filepaths = []
         for file in uploaded_files:
             filename = secure_filename(file.filename)
             filepath = os.path.join('./static/', f"uploads/{filename}")
             file.save(filepath)
-            redPanda = isRedPanda(filepath)
-            if redPanda:
-                true_positives += 1
+            filepaths.append(filepath)
+        
+        results = asyncio.run(main(filepaths))
+        #NOTE TO SELF --- THE PRICING TIER YOU ARE ON IN CUSTOMVISION.AI HAS A LIMIT OF 10 CALLS A SECOND!!!
+
         message = "Batch Report"
-        true_positives=int((true_positives/total_images)*100)
+        true_positives=int((results.count(True)/total_images)*100)
         false_positives = 100 - true_positives
-    
-        #run inference 
+
         #upload to blob storage 
         #add entry to database 
         #clear uploads folder so server is always optimised
 
     return render_template("upload_pics.html",message=message,true_positives=true_positives,false_positives=false_positives,  total_images=total_images, user=session["user"], value="upload")
-
-
 
 @app.route('/viewPics')
 def viewPics():

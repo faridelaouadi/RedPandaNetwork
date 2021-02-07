@@ -20,6 +20,7 @@ Current Progress
 - Red panda classifier using https://www.customvision.ai/ and script for inference
 - Web app hosted on Azure using Azure app service (https://redpandanetwork.azurewebsites.net/)
 - CI/CD workflow using Github and Azure Pipelines 
+- Asynchronous analysis of uploaded images (max of 10 per batch)
 
 Backlog 
 --------
