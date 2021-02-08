@@ -13,10 +13,11 @@
 
 
        <form action="{{ url_for('upload') }}" method="post" id="upload_images_form" autocomplete="off" enctype=multipart/form-data>
-        <div class="form-group row">
+        <div class="form-group row autocomplete">
             <label class="col-lg-3 col-form-label form-control-label">Camera ID</label>
             <div class="col-lg-9">
-                <input name="camera_ID" form="upload_images_form" class="form-control" type="text" required>
+                <input type="text" class="form-control form-control-rounded" id="cameraNumberInput" name="cameraID" placeholder="e.g. 0010">
+                <!--<input name="camera_ID" form="upload_images_form" class="form-control" type="text" required>-->
             </div>
         </div>
 

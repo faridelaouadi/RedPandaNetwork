@@ -1,7 +1,6 @@
 /*the container must be positioned relative:*/
 .autocomplete {
   position: relative;
-  display: inline-block;
 }
 
 
