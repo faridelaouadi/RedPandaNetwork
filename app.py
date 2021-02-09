@@ -12,9 +12,6 @@ import asyncio
 #from local_model import *
 from async_predict_local import *
 
-import requests
-import json
-
 app = Flask(__name__)
 app.config.from_object(app_config)
 Session(app)

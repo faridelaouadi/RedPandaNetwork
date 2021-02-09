@@ -2107,8 +2107,8 @@ table.grid td {
     display: block;
     padding: .75rem 1.25rem;
     margin-bottom: -1px;
-    background-color: rgba(251, 142, 0, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: rgba(167, 40, 40, 0.452);
+    /* border: 1px solid rgba(255, 255, 255, 0.12); */
 }
 
 .list-group-item-action {
@@ -2116,8 +2116,8 @@ table.grid td {
 }
 
 .list-group-item-action:hover {
-    color: #000000;
-    background-color: rgba(34, 14, 14, 0.2);
+    color: #ffffff;
+    background-color: rgb(167, 40, 40);
 }
 .list-group-item-action:focus {
     color: #920c0c;
@@ -2162,9 +2162,9 @@ table.grid td {
 
 .list-group-item.active {
     z-index: 2;
-    color: #fff;
-    background-color: #151616;
-    border-color: #fafafa;
+    color: #ffffff;
+    background-color: rgb(167, 40, 40);
+    border: none;
 }
 
 .list-group-item.active-success {
