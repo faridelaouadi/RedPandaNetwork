@@ -22,7 +22,7 @@ async def get_inference(session, filepath):
     headers={'content-type':'application/octet-stream','Prediction-Key':'de5c1effa9b9486b8ea2fd665faf461a'}
     async with session.post(url,data=open(filepath,"rb"),headers=headers) as r:
         response = await r.json()
-        print(response)
+        # print(response)
         predictions = response['predictions']
         if predictions[0]['tagName'][0] == "-":
             return False

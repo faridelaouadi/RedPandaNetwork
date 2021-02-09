@@ -9,6 +9,7 @@ import os
 import time
 from async_predict import *
 import asyncio
+from local_model import *
 
 import requests
 import json
@@ -76,14 +77,21 @@ def upload():
             file.save(filepath)
             filepaths.append(filepath)
         
+        '''
+        # the 5 lines below this are for using the external API
         results = []
         list_of_lists = break_up_filepaths(filepaths,4) #break up the filepaths into groups of 4
         for filepaths in list_of_lists:
             results = results + asyncio.run(main(filepaths))
-            time.sleep(2) #wait 2 seconds before another call
+            time.sleep(2) #wait 2 seconds before another call'''
         
-        
-        #NOTE TO SELF --- THE PRICING TIER YOU ARE ON IN CUSTOMVISION.AI HAS A LIMIT OF 10 CALLS A SECOND!!!
+        #using local model
+        results = []
+        labels = model_setup()
+        for filepath in filepaths:
+            if classify(filepath, labels) == 'panda':
+                results.append(True)
+
 
         message = "Batch Report"
         true_positives=int((results.count(True)/total_images)*100)
