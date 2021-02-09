@@ -7,9 +7,9 @@ import app_config
 from werkzeug.utils import secure_filename
 import os
 import time
-from async_predict import *
+#from async_predict import *
 import asyncio
-from local_model import *
+#from local_model import *
 from async_predict_local import *
 
 import requests
