@@ -2,3 +2,5 @@ venv/
 .vscode/
 __pycache__/
 flask_session/
+static/uploads
+static/images/panda+nonpanda/test_set
