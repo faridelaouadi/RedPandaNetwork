@@ -10,6 +10,7 @@ import time
 from async_predict import *
 import asyncio
 from local_model import *
+from async_predict_local import *
 
 import requests
 import json
@@ -66,6 +67,7 @@ def upload():
     true_positives = 0
     total_images = 0
     false_positives = 0
+    labels = model_setup()
     if request.method == 'POST':
         camera_ID = request.form.get('camera_ID')
         uploaded_files = request.files.getlist("file")
@@ -85,13 +87,16 @@ def upload():
             results = results + asyncio.run(main(filepaths))
             time.sleep(2) #wait 2 seconds before another call'''
         
-        #using local model
+        '''
+        #using local model with async
         results = []
         labels = model_setup()
         for filepath in filepaths:
-            if classify(filepath, labels) == 'panda':
-                results.append(True)
+            if classify_non_async(filepath, labels) == 'panda':
+                results.append(True)'''
 
+        #using async model
+        results = asyncio.run(main(filepaths,labels))
 
         message = "Batch Report"
         true_positives=int((results.count(True)/total_images)*100)

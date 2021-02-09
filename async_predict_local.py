@@ -1,10 +1,10 @@
+import asyncio
 import tensorflow as tf
 import os
 from PIL import Image
 import numpy as np
 import cv2
 
-# helper functions
 def convert_to_opencv(image):
     # RGB -> BGR conversion is performed as well.
     image = image.convert('RGB')
@@ -46,6 +46,24 @@ def update_orientation(image):
                 image = image.transpose(Image.FLIP_LEFT_RIGHT)
     return image
 
+    graph_def = tf.compat.v1.GraphDef()
+    labels = []
+
+    filename = "./classifier/model.pb"
+    labels_filename = "./classifier/labels.txt"
+
+    # Import the TF graph
+    with tf.io.gfile.GFile(filename, 'rb') as f:
+        graph_def.ParseFromString(f.read())
+        tf.import_graph_def(graph_def, name='')
+
+    # Create a list of labels.
+    with open(labels_filename, 'rt') as lf:
+        for l in lf:
+            labels.append(l.strip())
+
+    return labels
+
 def model_setup():
     graph_def = tf.compat.v1.GraphDef()
     labels = []
@@ -65,7 +83,7 @@ def model_setup():
 
     return labels
 
-def classify_non_async(imageFile, labels):
+async def classify(imageFile, labels):
     
     image = Image.open(imageFile)
 
@@ -110,7 +128,12 @@ def classify_non_async(imageFile, labels):
 
     # Print the highest probability label
         highest_probability_index = np.argmax(predictions)
-        return labels[highest_probability_index]
+        if labels[highest_probability_index] == 'panda':
+            print("panda")
+            return True
+        else:
+            print("not panda")
+            return False
         # print('Classified as: ' + labels[highest_probability_index])
         # print()
 
@@ -121,9 +144,21 @@ def classify_non_async(imageFile, labels):
         #     print (labels[label_index], truncated_probablity)
         #     label_index += 1
 
-# Loading image from file
-'''
-imageFile = "./static/images/1.JPG"
-labels = model_setup()
-for i in range(1,8):
-    print(classify(f"./static/images/{i}.JPG", labels))'''
+async def main(filepaths,labels):
+    tasks = []
+    for filepath in filepaths:
+        tasks.append(classify(filepath, labels))
+    
+    results = await asyncio.gather(*tasks)
+    return results
+
+# if __name__ == "__main__":
+#     filepaths = []
+#     labels = model_setup()
+#     for i in range(1,8):
+#         filepaths.append(f"./static/images/{i}.JPG")
+#     for i in range(1,9):
+#         filepaths.append(f"./static/images/panda+nonpanda/test_set/{i}.jpeg")
+#     print(filepaths)
+#     asyncio.run(main(filepaths,labels))
+
