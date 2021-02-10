@@ -1,7 +1,11 @@
+
+  
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Welcome {{user.get("name")}}</title>
+  <title>Welcome</title>
   
   <!-- loader-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.3/pace-theme-default.min.css" integrity="sha512-Y9zsaofS9we8rSZHHp2aJKYt75Ebi0KHBLAJCEs20yZhDysE5knyKk6ISMxfM/ax9I/Bk/OLBqdfGupez5POfQ==" crossorigin="anonymous" />
@@ -28,7 +32,6 @@
   <link href="../static/css/autocomplete.css" rel="stylesheet"/>
   <link href="../static/css/loading.css" rel="stylesheet"/>
 
-  <!-- Panda - Not Panda draggable interface CSS and JS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" integrity="sha512-okE4owXD0kfXzgVXBzCDIiSSlpXn3tJbNodngsTnIYPJWjuYhtJ+qMoc0+WUwLHeOwns0wm57Ka903FqQKM1sA==" crossorigin="anonymous" />
   <style>
     /* CSS code to define how the  */
@@ -188,46 +191,6 @@
    </div>
    <ul class="sidebar-menu do-nicescrol">
       <li class="sidebar-header">Choose page below</li>
-      {% if value == "home" %}
-      <li class="active">
-      {% else %}
-      <li>
-      {% endif %}
-        <a href="{{ url_for('home') }}">
-          <i class="zmdi zmdi-home"></i>
-          <p>Dashboard</p>
-        </a>
-      </li>
-      {% if value == "upload" %}
-      <li class="active">
-      {% else %}
-      <li>
-      {% endif %}
-        <a href="{{ url_for('upload') }}">
-          <i class="zmdi zmdi-camera-add"></i>
-          <p>Upload New images</p>
-        </a>
-      </li>
-      {% if value == "view" %}
-      <li class="active">
-      {% else %}
-      <li>
-      {% endif %}
-        <a href="{{ url_for('viewPics') }}">
-          <i class="zmdi zmdi-view-carousel"></i>
-          <p>View all images</p>
-        </a>
-      </li>
-      {% if value == "report" %}
-      <li class="active">
-      {% else %}
-      <li>
-      {% endif %}
-        <a href="#">
-          <i class="fa fa-exclamation-triangle"></i>
-          <p>Report fault camera</p>
-        </a>
-      </li>
 
     </ul>
    
@@ -246,7 +209,7 @@
   </ul>
      
   <ul class="navbar-nav align-items-center right-nav-link">
-    <li class="nav-item">{{ user.get("name") }}</li>
+    <li class="nav-item">Farid</li>
     <li class="nav-item">
       <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
         <span class="user-profile"><img src="https://st2.depositphotos.com/4111759/12123/v/600/depositphotos_121233262-stock-illustration-male-default-placeholder-avatar-profile.jpg" class="img-circle" alt="user avatar"></span>
@@ -257,7 +220,7 @@
            <div class="media">
              <div class="avatar"><img class="align-self-start mr-3" src="https://st2.depositphotos.com/4111759/12123/v/600/depositphotos_121233262-stock-illustration-male-default-placeholder-avatar-profile.jpg" alt="user avatar"></div>
             <div class="media-body">
-            <h6 class="mt-2 user-title">{{ user.get("name") }}</h6>
+            <h6 class="mt-2 user-title">Farid</h6>
             </div>
            </div>
           </a>
@@ -280,8 +243,51 @@
 
   <!--Start Dashboard Content-->
 
+  <div class="row mt-3">
+        
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Panda</h5>
+          <ul id="panda_zone" class="panda_zone ui-helper-reset ui-helper-clearfix">
+            
+            <li class="ui-widget-content ui-corner-tr">
+              <img src="2.JPG" alt="The peaks of High Tatras" width="100" height="80">
+              <a href="./2.JPG" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+              <a href="#" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+            </li>
+          
+            <li class="ui-widget-content ui-corner-tr">
+              <img src="2.JPG" alt="The peaks of High Tatras" width="100" height="80">
+              <a href="./2.JPG" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+              <a href="#" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+            </li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Not Panda</h5>
+          <ul id="non_panda_zone" class="non_panda_zone ui-helper-reset ui-helper-clearfix">
+        
+          
+            <li class="ui-widget-content ui-corner-tr">
+              <img src="2.JPG" alt="The peaks of High Tatras" width="100" height="80">
+              <a href="./2.JPG" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+              <a href='#' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>
+            </li>
+          
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div><!--End Row-->
 
-  {% block content %}{% endblock %}
+  
 	  
 	  
 	<!--start overlay-->
@@ -331,6 +337,8 @@
 
   <!--JS for autocomplete textbox -->
   <script src="../static/js/autocomplete.js"></script>
+
+  
   
   
 </body>
