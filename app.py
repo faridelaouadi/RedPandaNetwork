@@ -64,6 +64,8 @@ def upload():
     true_positives = 0
     total_images = 0
     false_positives = 0
+    panda_files = []
+    non_panda_files = []
     labels = model_setup()
     if request.method == 'POST':
         camera_ID = request.form.get('camera_ID')
@@ -93,17 +95,24 @@ def upload():
                 results.append(True)'''
 
         #using async model
-        results = asyncio.run(main(filepaths,labels))
+        results = asyncio.run(main(filepaths,labels)) #this is a list of (imageFile,Boolean)
+        
+
+        for (imageFile,classification) in results:
+            if classification == True: #it is a panda
+                panda_files.append(imageFile)
+            else:
+                non_panda_files.append(imageFile)
 
         message = "Batch Report"
-        true_positives=int((results.count(True)/total_images)*100)
+        true_positives=int((len(panda_files)/total_images)*100)
         false_positives = 100 - true_positives
 
         #upload to blob storage 
         #add entry to database 
         #clear uploads folder so server is always optimised
 
-    return render_template("upload_pics.html",message=message,true_positives=true_positives,false_positives=false_positives,  total_images=total_images, user=session["user"], value="upload")
+    return render_template("upload_pics.html",message=message,true_positives=true_positives,false_positives=false_positives,panda_files=panda_files,non_panda_files=non_panda_files,total_images=total_images, user=session["user"], value="upload")
 
 @app.route('/viewPics')
 def viewPics():

@@ -84,6 +84,7 @@ def model_setup():
     return labels
 
 async def classify(imageFile, labels):
+    print(f"we are classifying {imageFile}")
     
     image = Image.open(imageFile)
 
@@ -130,10 +131,10 @@ async def classify(imageFile, labels):
         highest_probability_index = np.argmax(predictions)
         if labels[highest_probability_index] == 'panda':
             print("panda")
-            return True
+            return (imageFile,True)
         else:
             print("not panda")
-            return False
+            return (imageFile,False)
         # print('Classified as: ' + labels[highest_probability_index])
         # print()
 
