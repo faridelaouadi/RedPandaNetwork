@@ -59,7 +59,7 @@
         <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label"></label>
             <div class="col-lg-9">
-                <input type="submit" form="upload_images_form" class="btn btn-light btn-round px-5" style="float: right;" value="Upload Image" onclick="loading();">
+                <input type="submit" form="upload_images_form" class="btn btn-light btn-round px-5" style="float: right;" value="Analyse Images" onclick="loading();">
             </div>
         </div>
     </form>
@@ -155,27 +155,14 @@
       </div>
     </div><!--End Row-->
 
+    <div class="form-group row">
+      <label class="col-lg-3 col-form-label form-control-label"></label>
+      <div class="col-lg-9">
+          <input type="submit"  class="btn btn-light btn-round px-5" style="float: right;" value="Upload Images" onclick="console.log('pressed button')">
+      </div>
+    </div>
+
     {% endif %}
-
-          <!--
-          <form method="POST" autocomplete="off" name="form-example-1" id="form-example-1" enctype="multipart/form-data">
-
-            <div class="autocomplete">
-              <label for="input-6">Camera Number</label>
-              <input type="text" class="form-control form-control-rounded" id="cameraNumberInput" name="cameraID" placeholder="e.g. 0010">
-             </div>
-
-            <div class="input-field">
-                <label class="active">Photos</label>
-                <div class="input-images-1" style="padding-top: .5rem;"></div>
-            </div>
-
-            <button type="submit" class="btn btn-light btn-round px-5" style="float: right;">Submit</button>
-
-            </form>
-        
--->
-
 
      </div>
      </div>
@@ -192,7 +179,8 @@
 		$('.pop').on('click', function() {
 			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
 			$('#imagemodal').modal('show');   
-		});		
+		});	
+    
 });
   </script>
 
