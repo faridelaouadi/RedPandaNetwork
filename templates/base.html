@@ -38,7 +38,6 @@
   .panda_zone li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
   .panda_zone li h5 { margin: 0 0 0.4em; cursor: move; }
   .panda_zone li a { float: right; }
-  .panda_zone li a.ui-icon-zoomin { float: left; }
   .panda_zone li img { width: 100%; cursor: move; }
 
   #non_panda_zone { float: right; width: 100%; min-height: 18em; padding: 1%;}
@@ -47,7 +46,6 @@
   .non_panda_zone li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
   .non_panda_zone li h5 { margin: 0 0 0.4em; cursor: move; }
   .non_panda_zone li a { float: right; }
-  .non_panda_zone li a.ui-icon-zoomin { float: left; }
   .non_panda_zone li img { width: 100%; cursor: move; }
  
   </style>
@@ -59,6 +57,7 @@
     // There's the gallery and the trash
     var $panda_zone = $( "#panda_zone" );
     var $non_panda_zone = $( "#non_panda_zone" );
+    
  
     // Let the gallery items be draggable
     $( "li", $panda_zone ).draggable({
@@ -85,7 +84,7 @@
         "ui-droppable-active": "custom-state-active"
       },
       drop: function( event, ui ) {
-        deleteImage( ui.draggable );
+        classify_notPanda( ui.draggable );
       }
     });
  
@@ -96,58 +95,25 @@
         "ui-droppable-active": "custom-state-active"
       },
       drop: function( event, ui ) {
-        recycleImage( ui.draggable );
+        classify_Panda( ui.draggable );
       }
     });
  
-    // Image deletion function
-    var recycle_icon = "<a href='#' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
-    function deleteImage( $item ) {
+    // move to non panda zone
+    function classify_notPanda( $item ) {
       $item.fadeOut(function() {
-        var $list = $( "ul", $non_panda_zone ).length ?
-          $( "ul", $non_panda_zone ) :
-          $( "<ul class='panda_zone ui-helper-reset'/>" ).appendTo( $non_panda_zone );
- 
-        $item.find( "a.ui-icon-trash" ).remove();
-        $item.append( recycle_icon ).appendTo( $list ).fadeIn();
+        $item.appendTo( $non_panda_zone ).fadeIn();
       });
     }
  
-    // Image recycle function
-    var trash_icon = "<a href='#' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
-    function recycleImage( $item ) {
+    // move to panda zone
+    function classify_Panda( $item ) {
       $item.fadeOut(function() {
-        $item
-          .find( "a.ui-icon-refresh" )
-            .remove()
-          .end()
-          .append( trash_icon )
-        
-          .appendTo( $panda_zone )
-          .fadeIn();
+        $item.appendTo( $panda_zone ).fadeIn();
       });
     }
  
-    // Image preview function, demonstrating the ui.dialog used as a modal window
-    function viewLargerImage( $link ) {
-      $('#myModal').modal('show'); 
-      var src = $link.attr( "href" ) //this is the where the image is located
-      //var title = $link.siblings( "img" ).attr( "alt" ) //the alt of the image
-      var $modal = $( "img[src$='" + src + "']" ); 
- 
-      if ( $modal.length ) {
-        $modal.dialog( "open" );
-      } else {
-        var img = $( "<img width='384' height='288' style='display: none; padding: 8px;' />" ).attr( "src", src ).appendTo( "body" );
-        setTimeout(function() {
-          img.dialog({
-            maxHeight: 500,
-            width: 570,
-            modal: true
-          });
-        }, 1 );
-      }
-    }
+
  
     // Resolve the icons behavior with event delegation
     $( "ul.panda_zone > li, ul.non_panda_zone > li" ).on( "click", function( event ) {
