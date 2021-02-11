@@ -133,7 +133,6 @@
  
     // Image preview function, demonstrating the ui.dialog used as a modal window
     function viewLargerImage( $link ) {
-      $('#myModal').modal('show'); 
       var src = $link.attr( "href" ) //this is the where the image is located
       //var title = $link.siblings( "img" ).attr( "alt" ) //the alt of the image
       var $modal = $( "img[src$='" + src + "']" ); 
@@ -173,6 +172,7 @@
   } );
 
   </script>
+  
   
 </head>
 
@@ -246,22 +246,28 @@
   <!--Start Dashboard Content-->
 
   <div class="row mt-3">
+
+    <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">              
+          <div class="modal-body">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <img src="" class="imagepreview" style="width: 100%;" >
+          </div>
+        </div>
+      </div>
+    </div>
         
     <div class="col-lg-6">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Panda</h5>
           <ul id="panda_zone" class="panda_zone ui-helper-reset ui-helper-clearfix">
+
             
-            <li class="ui-widget-content ui-corner-tr">
-              <img src="2.JPG" alt="The peaks of High Tatras" width="100" height="80">
-              <a href="./2.JPG" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
-              <a href="#" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
-            </li>
           
             <li class="ui-widget-content ui-corner-tr">
-              <img src="2.JPG" alt="The peaks of High Tatras" width="100" height="80">
-              <a href="./2.JPG" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+              <a href="#" class="pop"><img src="2.JPG" alt="The peaks of High Tatras" width="100" height="80"></a>
               <a href="#" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
             </li>
           
@@ -277,8 +283,7 @@
         
           
             <li class="ui-widget-content ui-corner-tr">
-              <img src="2.JPG" alt="The peaks of High Tatras" width="100" height="80">
-              <a href="./2.JPG" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+              <a href="#" class="pop"><img src="../static/images/panda+nonpanda/test_set/1.jpeg" alt="The peaks of High Tatras" width="100" height="80"></a>
               <a href='#' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>
             </li>
           
@@ -340,8 +345,14 @@
   <!--JS for autocomplete textbox -->
   <script src="../static/js/autocomplete.js"></script>
 
-  
-  
+  <script>
+    $(function() {
+		$('.pop').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			$('#imagemodal').modal('show');   
+		});		
+});
+  </script>
   
 </body>
 </html>
