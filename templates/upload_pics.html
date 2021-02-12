@@ -59,7 +59,7 @@
         <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label"></label>
             <div class="col-lg-9">
-                <input type="submit" form="upload_images_form" class="btn btn-light btn-round px-5" style="float: right;" value="Analyse Images" onclick="loading();">
+                <input type="submit" class="btn btn-light btn-round px-5" style="float: right;" value="Analyse Images" onclick="loading();">
             </div>
         </div>
     </form>
@@ -128,7 +128,7 @@
 
               {% for panda_image in panda_files %}
                 <li class="ui-widget-content ui-corner-tr">
-                  <a href="#" class="pop"><img src="{{panda_image}}" alt="Not a panda" width="100" height="80"></a>
+                  <a href="#" class="pop"><img src="{{panda_image}}" id="p_{{loop.index0}}" alt="Not a panda" width="100" height="80"></a>
                   
                 </li>
               {% endfor %}
@@ -145,7 +145,7 @@
               
               {% for non_panda_image in non_panda_files %}
               <li class="ui-widget-content ui-corner-tr">
-                <a href="#" class="pop"><img src="{{non_panda_image}}" alt="Not a panda" width="100" height="80"></a>
+                <a href="#" class="pop"><img src="{{non_panda_image}}" id="np_{{loop.index0}}" alt="Not a panda" width="100" height="80"></a>
               </li>
               {% endfor %}
             
@@ -158,7 +158,7 @@
     <div class="form-group row">
       <label class="col-lg-3 col-form-label form-control-label"></label>
       <div class="col-lg-9">
-          <input type="submit"  class="btn btn-light btn-round px-5" style="float: right;" value="Upload Images" onclick="console.log('pressed button')">
+          <input type="submit" id="upload_images" class="btn btn-light btn-round px-5" style="float: right;" value="Upload Images">
       </div>
     </div>
 

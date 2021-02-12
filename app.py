@@ -1,15 +1,14 @@
 import uuid
 import requests
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 import app_config
 from werkzeug.utils import secure_filename
 import os
 import time
-#from async_predict import *
 import asyncio
-#from local_model import *
+import json
 from async_predict_local import *
 
 app = Flask(__name__)
@@ -58,17 +57,37 @@ def break_up_filepaths(filepaths,divisor):
         counter += divisor
     return list_of_lists
 
+panda_files = []
+non_panda_files = []
+camera_ID = ''
+
+@app.route('/upload_analysed_images/', methods=['POST'])
+def upload_analysed_images():
+     if request.method == "POST":
+         global panda_files
+         global non_panda_files
+         global camera_ID
+         changes = request.get_json()
+         print(f"The panda files {panda_files}")
+         print(f"The non_panda files {non_panda_files}")
+         print(f"Changes are {changes}")
+         print(f"The camera we are inspecting is {camera_ID}")
+     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+
+
 @app.route('/upload', methods=["GET","POST"])
 def upload():
     message = ''
     true_positives = 0
     total_images = 0
     false_positives = 0
-    panda_files = []
-    non_panda_files = []
+    global panda_files
+    global non_panda_files
+    global camera_ID
     labels = model_setup()
     if request.method == 'POST':
         camera_ID = request.form.get('camera_ID')
+        print(f"The camera id is {camera_ID}")
         uploaded_files = request.files.getlist("file")
         total_images = len(uploaded_files)
         filepaths = []
@@ -108,15 +127,13 @@ def upload():
         true_positives=int((len(panda_files)/total_images)*100)
         false_positives = 100 - true_positives
 
-        #upload to blob storage 
-        #add entry to database 
-        #clear uploads folder so server is always optimised
-
     return render_template("upload_pics.html",message=message,true_positives=true_positives,false_positives=false_positives,panda_files=panda_files,non_panda_files=non_panda_files,total_images=total_images, user=session["user"], value="upload")
 
 @app.route('/viewPics')
 def viewPics():
     return render_template("view_pics.html",user=session["user"], value="view")
+
+
 
 
 @app.route(app_config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
