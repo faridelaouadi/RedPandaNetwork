@@ -63,16 +63,50 @@ camera_ID = ''
 
 @app.route('/upload_analysed_images/', methods=['POST'])
 def upload_analysed_images():
-     if request.method == "POST":
-         global panda_files
-         global non_panda_files
-         global camera_ID
-         changes = request.get_json()
-         print(f"The panda files {panda_files}")
-         print(f"The non_panda files {non_panda_files}")
-         print(f"Changes are {changes}")
-         print(f"The camera we are inspecting is {camera_ID}")
-     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+    if request.method == "POST":
+        global panda_files
+        global non_panda_files
+        global camera_ID
+        changes = request.get_json()
+
+        #  print(f"The panda files {panda_files}")
+        #  print(f"The non_panda files {non_panda_files}")
+        #  print(f"Changes are {changes}")
+        #  print(f"The camera we are inspecting is {camera_ID}")
+
+        dictionary_of_changes = {item:changes.count(item) % 2 for item in changes} #something like {'p_0': 2, 'np_0': 1}
+        modified_panda_files = []
+        modified_non_panda_files = []
+        for i in range(len(panda_files)):
+            try:
+                if dictionary_of_changes[f"p_{i}"] == 1:
+                    modified_non_panda_files.append(panda_files[i])
+                else:
+                    modified_panda_files.append(panda_files[i])
+            except:
+                #there is no key for that image
+                modified_panda_files.append(panda_files[i])
+        
+        for i in range(len(non_panda_files)):
+            try:
+                if dictionary_of_changes[f"np_{i}"] == 1:
+                    modified_panda_files.append(non_panda_files[i])
+                else:
+                    modified_non_panda_files.append(non_panda_files[i])
+            except:
+                #there is no key for that image
+                modified_non_panda_files.append(non_panda_files[i])
+
+    #at this point we have the perfectly classified images for panda and not panda  
+    # 
+    # reset both file lists so we dont mess up the other function          
+    panda_files = []
+    non_panda_files = [] 
+
+    print(f"NON PANDAS ---> {modified_non_panda_files}")
+    print(f"PANDAS -----> {modified_panda_files}")
+
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 
 @app.route('/upload', methods=["GET","POST"])
@@ -86,7 +120,7 @@ def upload():
     global camera_ID
     labels = model_setup()
     if request.method == 'POST':
-        camera_ID = request.form.get('camera_ID')
+        camera_ID = request.form.get('cameraID')
         uploaded_files = request.files.getlist("file")
         total_images = len(uploaded_files)
         filepaths = []
