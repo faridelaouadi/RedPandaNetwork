@@ -87,7 +87,6 @@ def upload():
     labels = model_setup()
     if request.method == 'POST':
         camera_ID = request.form.get('camera_ID')
-        print(f"The camera id is {camera_ID}")
         uploaded_files = request.files.getlist("file")
         total_images = len(uploaded_files)
         filepaths = []

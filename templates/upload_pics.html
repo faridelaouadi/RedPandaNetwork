@@ -12,21 +12,15 @@
 
 
 
-       <form action="{{ url_for('upload') }}" method="post" id="upload_images_form" autocomplete="off" enctype=multipart/form-data>
+       <form action="{{ url_for('upload') }}" onsubmit="loading();" method="post" id="upload_images_form" autocomplete="off" enctype=multipart/form-data>
+          
         <div class="form-group row autocomplete">
-            <label class="col-lg-3 col-form-label form-control-label">Camera ID</label>
-            <div class="col-lg-9">
-                <input type="text" class="form-control form-control-rounded" id="cameraNumberInput" name="cameraID" form="upload_images_form" placeholder="e.g. 0010" required>
-                <!--<input name="camera_ID" form="upload_images_form" class="form-control" type="text" required>-->
-            </div>
-        </div>
-        <!--
-        <div class="form-group row">
-            <label class="col-lg-3 col-form-label form-control-label">Choose File</label>
-            <div class="col-lg-9">
-                <input class="form-control" form="upload_images_form" type="file" name=file multiple="" required>
-            </div>
-        </div>-->
+              <label class="col-lg-3 col-form-label form-control-label">Camera ID</label>
+              <div class="col-lg-9">
+                  <input type="text" class="form-control form-control-rounded" id="cameraNumberInput" name="cameraID" form="upload_images_form" placeholder="e.g. 0010" required>
+                  <!--<input name="camera_ID" form="upload_images_form" class="form-control" type="text" required>-->
+              </div>
+          </div>
 
         <div class="form-group row">
           <label class="col-lg-4 col-form-label form-control-label">Choose files</label>
@@ -59,9 +53,10 @@
         <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label"></label>
             <div class="col-lg-9">
-                <input type="submit" class="btn btn-light btn-round px-5" style="float: right;" value="Analyse Images" onclick="loading();">
+                <input type="submit" form="upload_images_form" class="btn btn-light btn-round px-5" style="float: right;" value="Analyse Images" >
             </div>
         </div>
+
     </form>
 
     {% if message %}
