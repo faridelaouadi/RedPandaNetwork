@@ -129,12 +129,13 @@ async def classify(imageFile, labels):
 
     # Print the highest probability label
         highest_probability_index = np.argmax(predictions)
+        confidence = "%0.2f" % (float(predictions[0][highest_probability_index])*100)
         if labels[highest_probability_index] == 'panda':
             print("panda")
-            return (imageFile,True)
+            return (imageFile,True,confidence)
         else:
             print("not panda")
-            return (imageFile,False)
+            return (imageFile,False,confidence)
         # print('Classified as: ' + labels[highest_probability_index])
         # print()
 

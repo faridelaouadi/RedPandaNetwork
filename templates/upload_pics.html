@@ -123,7 +123,8 @@
 
               {% for panda_image in panda_files %}
                 <li class="ui-widget-content ui-corner-tr">
-                  <a href="#" class="pop"><img src="{{panda_image}}" id="p_{{loop.index0}}" alt="Not a panda" width="100" height="80"></a>
+                  <a href="#" class="pop"><img src="{{panda_image[0]}}" id="p_{{loop.index0}}" alt="Not a panda" width="100" height="80"></a>
+                  <span class="badge badge-pill badge-success">{{panda_image[1]}}</span>
                   
                 </li>
               {% endfor %}
@@ -140,7 +141,8 @@
               
               {% for non_panda_image in non_panda_files %}
               <li class="ui-widget-content ui-corner-tr">
-                <a href="#" class="pop"><img src="{{non_panda_image}}" id="np_{{loop.index0}}" alt="Not a panda" width="100" height="80"></a>
+                <a href="#" class="pop"><img src="{{non_panda_image[0]}}" id="np_{{loop.index0}}" alt="Not a panda" width="100" height="80"></a>
+                <span class="badge badge-pill badge-danger">{{non_panda_image[1]}}%</span>
               </li>
               {% endfor %}
             

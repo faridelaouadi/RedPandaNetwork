@@ -106,6 +106,12 @@ def upload_analysed_images():
     print(f"NON PANDAS ---> {modified_non_panda_files}")
     print(f"PANDAS -----> {modified_panda_files}")
 
+    #TODO ----
+    #we then need to upload to blob storage 
+    #clear uploads folder
+    #get back the blob link 
+    #insert row into database for the panda and non panda images
+
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 
@@ -150,11 +156,11 @@ def upload():
         results = asyncio.run(main(filepaths,labels)) #this is a list of (imageFile,Boolean)
         
 
-        for (imageFile,classification) in results:
+        for (imageFile,classification,confidence) in results:
             if classification == True: #it is a panda
-                panda_files.append(imageFile)
+                panda_files.append([imageFile,confidence])
             else:
-                non_panda_files.append(imageFile)
+                non_panda_files.append([imageFile,confidence])
 
         message = "Batch Report"
         true_positives=int((len(panda_files)/total_images)*100)
