@@ -48,6 +48,13 @@ def logout():
 def home():
     return render_template("dashboard.html",user=session["user"], value="home")
 
+@app.route('/camera_images', methods=['GET'])
+def get_camera_images():
+    print(f"Camera ID : {request.args.get('cameraID')}")
+    time.sleep(5)
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+
+
 def break_up_filepaths(filepaths,divisor):
     number_of_lists = ( len(filepaths) // divisor ) + 1# 11//5 = 2
     list_of_lists = []
@@ -89,11 +96,12 @@ def get_modified_lists(panda_files,non_panda_files,changes):
     return modified_panda_files,modified_non_panda_files
 
 def clear_uploads_folder():
+    print("clearing the uploads")
     filelist = [ f for f in os.listdir('./static/uploads/')]
     for f in filelist:
         os.remove(os.path.join('./static/uploads/', f))
 
-@app.route('/upload_analysed_images/', methods=['POST'])
+@app.route('/upload_analysed_images', methods=['POST'])
 def upload_analysed_images():
     if request.method == "POST":
         global panda_files
@@ -103,33 +111,36 @@ def upload_analysed_images():
 
         modified_panda_files,modified_non_panda_files = get_modified_lists(panda_files,non_panda_files,changes)
         
-    #at this point we have the perfectly classified images for panda and not panda  
-    # 
-    # reset both file lists so we dont mess up the other function          
-    panda_files = []
-    non_panda_files = [] 
+        #at this point we have the perfectly classified images for panda and not panda  
+        # 
+        # reset both file lists so we dont mess up the other function          
+        panda_files = []
+        non_panda_files = [] 
 
-    for non_panda in modified_non_panda_files:
-        extension = non_panda[0][1:].split('.')[1]
-        image_name = f'non_panda_{uuid.uuid1()}.{extension}'
-        filepath = non_panda[0]
-        upload_image_to_container(camera_ID,image_name,filepath)
-        upload_image_to_container("non-pandas",image_name,filepath)
-    
-    for panda in modified_panda_files:
-        extension = panda[0][1:].split('.')[1] #getting the extension of the image e.g PNG, JPEG etc 
-        image_name = f'panda_{uuid.uuid1()}.{extension}'
-        filepath = panda[0]
-        upload_image_to_container(camera_ID,image_name,filepath)
-        upload_image_to_container("pandas",image_name,filepath)
-    
-    clear_uploads_folder()
+        print(modified_non_panda_files)
+        print(modified_panda_files)
 
-    #TODO ----
-    #get back the blob link 
-    #insert row into database for the panda and non panda images
+        for non_panda in modified_non_panda_files:
+            extension = non_panda[0][1:].split('.')[1]
+            image_name = f'non_panda_{uuid.uuid1()}.{extension}'
+            filepath = non_panda[0]
+            upload_image_to_container(camera_ID,image_name,filepath)
+            upload_image_to_container("non-pandas",image_name,filepath)
+        
+        for panda in modified_panda_files:
+            extension = panda[0][1:].split('.')[1] #getting the extension of the image e.g PNG, JPEG etc 
+            image_name = f'panda_{uuid.uuid1()}.{extension}'
+            filepath = panda[0]
+            upload_image_to_container(camera_ID,image_name,filepath)
+            upload_image_to_container("pandas",image_name,filepath)
+        
+        clear_uploads_folder()
 
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+        #TODO ----
+        #get back the blob link 
+        #insert row into database for the panda and non panda images
+
+        return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 
 @app.route('/upload', methods=["GET","POST"])
@@ -188,8 +199,6 @@ def upload():
 @app.route('/viewPics')
 def viewPics():
     return render_template("view_pics.html",user=session["user"], value="view")
-
-
 
 
 @app.route(app_config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD

@@ -120,6 +120,7 @@
 
     //if the user wants to upload the images to the server after correcting the classification, do this.
     $("#upload_images").click(function(){
+      $("input").prop('disabled', true);
       $.ajax({
         type: 'POST',
         url: "{{url_for('upload_analysed_images')}}",

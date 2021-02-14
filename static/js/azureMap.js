@@ -48,10 +48,10 @@ function GetMap() {
 
 
         //Create three point features on the map and add some metadata in the properties which we will want to display in a popup.
-        var camera1 = new atlas.data.Feature(new atlas.data.Point([85.331,27.72]), {modalLink:'#camera1', cameraID: '0010', category:"camera"});
-        var camera2 = new atlas.data.Feature(new atlas.data.Point([86.331,27.72]), {modalLink:'#camera1', cameraID: '0011', category:"camera"});
-        var camera3 = new atlas.data.Feature(new atlas.data.Point([85.331,28.12]), {modalLink:'#camera1', cameraID: '0012', category:"camera"});
-        var camera4 = new atlas.data.Feature(new atlas.data.Point([84.331,27.72]), {modalLink:'#camera1', cameraID: '0013', category:"camera"});
+        var camera1 = new atlas.data.Feature(new atlas.data.Point([85.331,27.72]), {modalLink:'#cameraModal', cameraID: '0010', category:"camera"});
+        var camera2 = new atlas.data.Feature(new atlas.data.Point([86.331,27.72]), {modalLink:'#cameraModal', cameraID: '0011', category:"camera"});
+        var camera3 = new atlas.data.Feature(new atlas.data.Point([85.331,28.12]), {modalLink:'#cameraModal', cameraID: '0012', category:"camera"});
+        var camera4 = new atlas.data.Feature(new atlas.data.Point([84.331,27.72]), {modalLink:'#cameraModal', cameraID: '0013', category:"camera"});
 
         //pandas next to camera 1
         var panda1 = new atlas.data.Feature(new atlas.data.Point([85.331,27.52]), {category:"panda"});
@@ -121,6 +121,16 @@ function GetMap() {
         map.events.add('click', cameraSymbolLayer, function (e) {
             //Get custom properties on the marker
             var properties = e.shapes[0].getProperties();
+            console.log(properties)
+            $('.modal-title').html("Camera ID : " + properties.cameraID);
+            $.ajax({
+              url: '/camera_images',
+              type: "GET",
+              data: { cameraID: properties.cameraID},
+              success: function(){
+                console.log("we will now add the images to the body")
+              }
+            });
             $(properties.modalLink).modal('show')
             
         });
