@@ -10,6 +10,7 @@ import time
 import asyncio
 import json
 from async_predict_local import *
+from blob import *
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -61,6 +62,37 @@ panda_files = []
 non_panda_files = []
 camera_ID = ''
 
+def get_modified_lists(panda_files,non_panda_files,changes):
+    dictionary_of_changes = {item:changes.count(item) % 2 for item in changes} #something like {'p_0': 2, 'np_0': 1}
+    modified_panda_files = []
+    modified_non_panda_files = []
+    for i in range(len(panda_files)):
+        try:
+            if dictionary_of_changes[f"p_{i}"] == 1:
+                modified_non_panda_files.append(panda_files[i])
+            else:
+                modified_panda_files.append(panda_files[i])
+        except:
+            #there is no key for that image
+            modified_panda_files.append(panda_files[i])
+    
+    for i in range(len(non_panda_files)):
+        try:
+            if dictionary_of_changes[f"np_{i}"] == 1:
+                modified_panda_files.append(non_panda_files[i])
+            else:
+                modified_non_panda_files.append(non_panda_files[i])
+        except:
+            #there is no key for that image
+            modified_non_panda_files.append(non_panda_files[i])
+    
+    return modified_panda_files,modified_non_panda_files
+
+def clear_uploads_folder():
+    filelist = [ f for f in os.listdir('./static/uploads/')]
+    for f in filelist:
+        os.remove(os.path.join('./static/uploads/', f))
+
 @app.route('/upload_analysed_images/', methods=['POST'])
 def upload_analysed_images():
     if request.method == "POST":
@@ -69,46 +101,31 @@ def upload_analysed_images():
         global camera_ID
         changes = request.get_json()
 
-        #  print(f"The panda files {panda_files}")
-        #  print(f"The non_panda files {non_panda_files}")
-        #  print(f"Changes are {changes}")
-        #  print(f"The camera we are inspecting is {camera_ID}")
-
-        dictionary_of_changes = {item:changes.count(item) % 2 for item in changes} #something like {'p_0': 2, 'np_0': 1}
-        modified_panda_files = []
-        modified_non_panda_files = []
-        for i in range(len(panda_files)):
-            try:
-                if dictionary_of_changes[f"p_{i}"] == 1:
-                    modified_non_panda_files.append(panda_files[i])
-                else:
-                    modified_panda_files.append(panda_files[i])
-            except:
-                #there is no key for that image
-                modified_panda_files.append(panda_files[i])
+        modified_panda_files,modified_non_panda_files = get_modified_lists(panda_files,non_panda_files,changes)
         
-        for i in range(len(non_panda_files)):
-            try:
-                if dictionary_of_changes[f"np_{i}"] == 1:
-                    modified_panda_files.append(non_panda_files[i])
-                else:
-                    modified_non_panda_files.append(non_panda_files[i])
-            except:
-                #there is no key for that image
-                modified_non_panda_files.append(non_panda_files[i])
-
     #at this point we have the perfectly classified images for panda and not panda  
     # 
     # reset both file lists so we dont mess up the other function          
     panda_files = []
     non_panda_files = [] 
 
-    print(f"NON PANDAS ---> {modified_non_panda_files}")
-    print(f"PANDAS -----> {modified_panda_files}")
+    for non_panda in modified_non_panda_files:
+        extension = non_panda[0][1:].split('.')[1]
+        image_name = f'non_panda_{uuid.uuid1()}.{extension}'
+        filepath = non_panda[0]
+        upload_image_to_container(camera_ID,image_name,filepath)
+        upload_image_to_container("non-pandas",image_name,filepath)
+    
+    for panda in modified_panda_files:
+        extension = panda[0][1:].split('.')[1] #getting the extension of the image e.g PNG, JPEG etc 
+        image_name = f'panda_{uuid.uuid1()}.{extension}'
+        filepath = panda[0]
+        upload_image_to_container(camera_ID,image_name,filepath)
+        upload_image_to_container("pandas",image_name,filepath)
+    
+    clear_uploads_folder()
 
     #TODO ----
-    #we then need to upload to blob storage 
-    #clear uploads folder
     #get back the blob link 
     #insert row into database for the panda and non panda images
 
