@@ -123,15 +123,30 @@ function GetMap() {
             var properties = e.shapes[0].getProperties();
             console.log(properties)
             $('.modal-title').html("Camera ID : " + properties.cameraID);
-            $.ajax({
-              url: '/camera_images',
-              type: "GET",
-              data: { cameraID: properties.cameraID},
-              success: function(){
-                console.log("we will now add the images to the body")
-              }
+            
+            fetch(`/camera_images/${properties.cameraID}`)
+            .then(function (response) {
+                return response.text();
+            }).then(function (text) {
+                if (JSON.parse(text)['success']){
+                  var urls = JSON.parse(text)['urls']
+                  $('#total-pics-list').html("Total pics : " + urls.length);
+                  for (imageURL in urls){
+                    if (imageURL == 0){
+                      $('#total-pics .carousel-inner').append(`<div class='carousel-item active'> <img src='${urls[imageURL]}' class='d-block w-100'></div>`)
+                    }else{
+                      $('#total-pics .carousel-inner').append(`<div class='carousel-item'> <img src='${urls[imageURL]}' class='d-block w-100'></div>`)
+                    }
+                  }
+                  $(properties.modalLink).modal('show')
+                }else{
+                  alert("No images found!")
+                }
+                
+                //console.log(urls[imageURL])
+                
+                
             });
-            $(properties.modalLink).modal('show')
             
         });
         });

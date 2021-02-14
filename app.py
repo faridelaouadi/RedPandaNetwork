@@ -11,6 +11,7 @@ import asyncio
 import json
 from async_predict_local import *
 from blob import *
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -48,11 +49,37 @@ def logout():
 def home():
     return render_template("dashboard.html",user=session["user"], value="home")
 
-@app.route('/camera_images', methods=['GET'])
-def get_camera_images():
-    print(f"Camera ID : {request.args.get('cameraID')}")
-    time.sleep(5)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+@app.route('/camera_images/<camera_id>', methods=['GET'])
+def camera_images(camera_id):
+    print(f"Getting images!!!")
+    account_name="redpanda"
+    account_key="vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w=="
+    connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+    container_name = camera_id
+    try:
+        container = ContainerClient.from_connection_string(conn_str=connect_str, container_name=container_name)
+        blob_list = container.list_blobs()
+        image_URLs = []
+        for blob in blob_list:
+            blob_name=blob.name
+            url = f"https://{account_name}.blob.core.windows.net/{container_name}/{blob_name}"
+            sas_token = generate_blob_sas(
+                account_name=account_name,
+                account_key=account_key,
+                container_name=container_name,
+                blob_name=blob_name,
+                permission=AccountSasPermissions(read=True),
+                expiry=datetime.utcnow() + timedelta(hours=1)
+            )
+
+            url_with_sas = f"{url}?{sas_token}"
+            image_URLs.append(url_with_sas)
+        return json.dumps({'success':True, "urls":image_URLs}), 200, {'ContentType':'application/json'}
+    except:
+        print("AN EXCEPTION OCCURED")
+        return json.dumps({'success':False})
+    
+    
 
 
 def break_up_filepaths(filepaths,divisor):
