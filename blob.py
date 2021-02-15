@@ -34,8 +34,8 @@ def upload_to_other(image_name,filepath):
     #upload to blob
     url = upload_image_to_container("other",image_name,filepath)
     #get the image url
-    latitude = 85.331
-    longitude = 27.52
+    latitude = 85.421
+    longitude = 28.12
     new_other = {'PartitionKey': image_name, 'RowKey': image_name, 'imageURL':url, 'lat':latitude,'long':longitude}
     try:
         table_service.insert_entity('others', new_other)
