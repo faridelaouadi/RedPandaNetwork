@@ -19,3 +19,10 @@ def get_all_cameras():
             print(f"Camera ID : {camera.PartitionKey} has position ({camera.lat},{camera.long})")
             camera_list.append([camera.PartitionKey,camera.lat,camera.long])
     return camera_list
+
+def get_all_sightings():
+    sightings_list = []
+    sightings = table_service.query_entities( 'others')
+    for sighting in sightings:
+        sightings_list.append([sighting.imageURL, sighting.lat, sighting.long])
+    return sightings_list

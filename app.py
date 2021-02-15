@@ -58,6 +58,11 @@ def getCameraList():
     camera_list = get_all_cameras()
     return json.dumps({'success':True, "camera_list":camera_list}), 200, {'ContentType':'application/json'}
 
+@app.route('/getSightings', methods=['GET'])
+def getSightings():
+    sightings_list = get_all_sightings()
+    return json.dumps({'success':True, "sightings_list":sightings_list}), 200, {'ContentType':'application/json'}
+
 @app.route('/camera_images/<camera_id>', methods=['GET'])
 def camera_images(camera_id):
     print(f"Getting images!!!")

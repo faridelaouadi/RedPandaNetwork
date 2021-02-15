@@ -1,22 +1,19 @@
 var map;
-var datasource, popup, pandaSymbolLayer, cameraSymbolLayer, heatmap_layer,cameras_locations
-var cameras_locations = [["0010",85.331,27.72],["0011",86.331,27.72],["0012",85.331,28.12],["0013",84.331,27.72]]
-var panda_sightings 
+var datasource, popup, pandaSymbolLayer, cameraSymbolLayer, heatmap_layer
 
-// fetch(`/getCameraList`)
-//             .then(function (response) {
-//                 console.log("we are making the call")
-//                 return response.text();
-//             }).then(function (text) {
-//                 if (JSON.parse(text)['success']){
+async function retrieveIconData(){
+  const camera_list_response = await fetch(`/getCameraList`)
+  const cameras_locations = await camera_list_response.json();
 
-//                   cameras_locations = JSON.parse(text)['camera_list']
-//                 }
-//               });
+  const sightings_response = await fetch(`/getSightings`)
+  const panda_sightings = await sightings_response.json();
 
+  return cameras_locations
+}
 
-
-function GetMap() {
+async function GetMap() {
+    response = await retrieveIconData()
+    camera_locations = response["camera_list"]
     //Initialize a map instance.
     map = new atlas.Map('myMap', {
     center: [85.331,27.72],
@@ -64,9 +61,10 @@ function GetMap() {
 
         //Create three point features on the map and add some metadata in the properties which we will want to display in a popup.
         camera_location_list = []
-        for (camera in cameras_locations){
-          console.log(cameras_locations[camera][1])
-          var new_camera = new atlas.data.Feature(new atlas.data.Point([cameras_locations[camera][1],cameras_locations[camera][2]]), {modalLink:'#cameraModal', cameraID: cameras_locations[camera][0], category:"camera"});
+        //console.log("WE ARE PRINTING THE CAMERA LOCATIONS")
+        for (camera in camera_locations){
+          //console.log(camera_locations[camera])
+          var new_camera = new atlas.data.Feature(new atlas.data.Point([camera_locations[camera][1],camera_locations[camera][2]]), {modalLink:'#cameraModal', cameraID: camera_locations[camera][0], category:"camera"});
           camera_location_list.push(new_camera)
         }
         // var camera1 = new atlas.data.Feature(new atlas.data.Point([85.331,27.72]), {modalLink:'#cameraModal', cameraID: '0010', category:"camera"});
