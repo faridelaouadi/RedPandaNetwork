@@ -1,5 +1,6 @@
 import os, uuid
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, generate_blob_sas, AccountSasPermissions
+from tables import *
 
 def upload_image_to_container(container_name,image_name,filepath):
     #COMPRESS THE IMAGE BEFORE YOU SEND IT
@@ -16,6 +17,7 @@ def upload_image_to_container(container_name,image_name,filepath):
     with open(filepath, "rb") as data:
         blob_client.upload_blob(data)
     print("data uploaded")
+    return blob_client.url
 
 def get_images_from_container(container_name):
     connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
@@ -27,3 +29,18 @@ def get_images_from_container(container_name):
         with open(f"./static/images/{blob.name}", "wb") as my_blob:
             blob_data = blob_instance.download_blob()
             blob_data.readinto(my_blob)
+
+def upload_to_other(image_name,filepath):
+    #upload to blob
+    url = upload_image_to_container("other",image_name,filepath)
+    #get the image url
+    latitude = 85.331
+    longitude = 27.52
+    new_other = {'PartitionKey': image_name, 'RowKey': image_name, 'imageURL':url, 'lat':latitude,'long':longitude}
+    try:
+        table_service.insert_entity('others', new_other)
+    except:
+        table_service.create_table('others')
+        table_service.insert_entity('others', new_other)
+
+    #put a row into the other table

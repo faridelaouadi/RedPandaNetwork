@@ -1,6 +1,20 @@
 var map;
-var datasource, popup, pandaSymbolLayer, cameraSymbolLayer, heatmap_layer
-var cameras = ['0010', '0011', '0012', '0013'];
+var datasource, popup, pandaSymbolLayer, cameraSymbolLayer, heatmap_layer,cameras_locations
+var cameras_locations = [["0010",85.331,27.72],["0011",86.331,27.72],["0012",85.331,28.12],["0013",84.331,27.72]]
+var panda_sightings 
+
+// fetch(`/getCameraList`)
+//             .then(function (response) {
+//                 console.log("we are making the call")
+//                 return response.text();
+//             }).then(function (text) {
+//                 if (JSON.parse(text)['success']){
+
+//                   cameras_locations = JSON.parse(text)['camera_list']
+//                 }
+//               });
+
+
 
 function GetMap() {
     //Initialize a map instance.
@@ -49,10 +63,16 @@ function GetMap() {
 
 
         //Create three point features on the map and add some metadata in the properties which we will want to display in a popup.
-        var camera1 = new atlas.data.Feature(new atlas.data.Point([85.331,27.72]), {modalLink:'#cameraModal', cameraID: '0010', category:"camera"});
-        var camera2 = new atlas.data.Feature(new atlas.data.Point([86.331,27.72]), {modalLink:'#cameraModal', cameraID: '0011', category:"camera"});
-        var camera3 = new atlas.data.Feature(new atlas.data.Point([85.331,28.12]), {modalLink:'#cameraModal', cameraID: '0012', category:"camera"});
-        var camera4 = new atlas.data.Feature(new atlas.data.Point([84.331,27.72]), {modalLink:'#cameraModal', cameraID: '0013', category:"camera"});
+        camera_location_list = []
+        for (camera in cameras_locations){
+          console.log(cameras_locations[camera][1])
+          var new_camera = new atlas.data.Feature(new atlas.data.Point([cameras_locations[camera][1],cameras_locations[camera][2]]), {modalLink:'#cameraModal', cameraID: cameras_locations[camera][0], category:"camera"});
+          camera_location_list.push(new_camera)
+        }
+        // var camera1 = new atlas.data.Feature(new atlas.data.Point([85.331,27.72]), {modalLink:'#cameraModal', cameraID: '0010', category:"camera"});
+        // var camera2 = new atlas.data.Feature(new atlas.data.Point([86.331,27.72]), {modalLink:'#cameraModal', cameraID: '0011', category:"camera"});
+        // var camera3 = new atlas.data.Feature(new atlas.data.Point([85.331,28.12]), {modalLink:'#cameraModal', cameraID: '0012', category:"camera"});
+        // var camera4 = new atlas.data.Feature(new atlas.data.Point([84.331,27.72]), {modalLink:'#cameraModal', cameraID: '0013', category:"camera"});
 
         //pandas next to camera 1
         var panda1 = new atlas.data.Feature(new atlas.data.Point([85.331,27.52]), {category:"panda"});
@@ -78,9 +98,10 @@ function GetMap() {
         var panda11 = new atlas.data.Feature(new atlas.data.Point([84.271,27.72]), {category:"panda"});
         var panda12 = new atlas.data.Feature(new atlas.data.Point([84.331,27.68]), {category:"panda"});
 
-        camera_datasource.add([camera1,camera2,camera3,camera4]);
-        panda_datasource.add([panda1,panda2,panda3,panda4,panda5,panda6,panda7,panda8,panda9,panda10,panda11,panda12]);
+        
+        
 
+        camera_datasource.add(camera_location_list);
         //Basically adding the image to the points
         cameraSymbolLayer = new atlas.layer.SymbolLayer(camera_datasource, null, {
             iconOptions: {
@@ -99,6 +120,7 @@ function GetMap() {
                 }
         });
 
+        panda_datasource.add([panda1,panda2,panda3,panda4,panda5,panda6,panda7,panda8,panda9,panda10,panda11,panda12]);
         pandaSymbolLayer = new atlas.layer.SymbolLayer(panda_datasource, null, {
             iconOptions: {
             image: 'panda_icon',
@@ -195,9 +217,6 @@ function GetMap() {
       });
 
   }
-
-
-
 
 
 window.addEventListener("load", GetMap);

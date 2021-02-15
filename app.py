@@ -12,6 +12,7 @@ import json
 from async_predict_local import *
 from blob import *
 from datetime import datetime, timedelta
+from tables import *
 
 app = Flask(__name__)
 app.config.from_object(app_config)
@@ -48,7 +49,14 @@ def logout():
 
 @app.route('/home')
 def home():
-    return render_template("dashboard.html",user=session["user"], value="home")
+    #get the cameras and their long + lat
+    camera_list = get_all_cameras()
+    return render_template("dashboard.html",camera_list=camera_list,user=session["user"], value="home")
+
+@app.route('/getCameraList', methods=['GET'])
+def getCameraList():
+    camera_list = get_all_cameras()
+    return json.dumps({'success':True, "camera_list":camera_list}), 200, {'ContentType':'application/json'}
 
 @app.route('/camera_images/<camera_id>', methods=['GET'])
 def camera_images(camera_id):
@@ -146,14 +154,19 @@ def upload_analysed_images():
             extension = non_panda[0][1:].split('.')[1]
             image_name = f'non_panda_{uuid.uuid1()}.{extension}'
             filepath = non_panda[0]
-            upload_image_to_container(camera_ID,image_name,filepath)
+            if camera_ID != 'other':
+                upload_image_to_container(camera_ID,image_name,filepath)
             upload_image_to_container("non-pandas",image_name,filepath)
+            
         
         for panda in modified_panda_files:
             extension = panda[0][1:].split('.')[1] #getting the extension of the image e.g PNG, JPEG etc 
             image_name = f'panda_{uuid.uuid1()}.{extension}'
             filepath = panda[0]
-            upload_image_to_container(camera_ID,image_name,filepath)
+            if camera_ID != 'other':
+                upload_image_to_container(camera_ID,image_name,filepath)
+            else:
+                upload_to_other(image_name,filepath)
             upload_image_to_container("pandas",image_name,filepath)
         
         clear_uploads_folder()
@@ -221,7 +234,6 @@ def upload():
 @app.route('/viewPics')
 def viewPics():
     return render_template("view_pics.html",user=session["user"], value="view")
-
 
 @app.route(app_config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
 def authorized():

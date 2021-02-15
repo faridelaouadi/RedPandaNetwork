@@ -89,16 +89,18 @@
         <div  style="width: 100%;height: 85vh;">
           <div id="myMap"></div>
           <div style="position:absolute;top:20px;left:20px;background-color:rgba(236, 133, 133, 0.424);padding:10px;border-radius:10px; width:25%">
-            <input type="checkbox" checked="checked" onclick="filterSymbols(this, '0010')" /> Camera 0010<br />
-            <input type="checkbox" checked="checked" onclick="filterSymbols(this, '0011')" /> Camera 0011<br />
-            <input type="checkbox" checked="checked" onclick="filterSymbols(this, '0012')" /> Camera 0012<br />
-            <input type="checkbox" checked="checked" onclick="filterSymbols(this, '0013')" /> Camera 0013<br /> 
+            {% for camera in camera_list %}
+                <input type="checkbox" checked="checked" onclick="filterSymbols(this, '{{camera[0]}}')" /> Camera {{camera[0]}}<br />
+    
+            {% endfor %}
           </div>
       </div>
 
  </div>
 </div>
 </div>
+
+
 
 
 
