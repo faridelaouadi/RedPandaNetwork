@@ -80,7 +80,6 @@ def camera_images(camera_id):
         print("AN EXCEPTION OCCURED")
         return json.dumps({'success':False})
     
-
 def break_up_filepaths(filepaths,divisor):
     number_of_lists = ( len(filepaths) // divisor ) + 1# 11//5 = 2
     list_of_lists = []
@@ -143,9 +142,6 @@ def upload_analysed_images():
         panda_files = []
         non_panda_files = [] 
 
-        print(modified_non_panda_files)
-        print(modified_panda_files)
-
         for non_panda in modified_non_panda_files:
             extension = non_panda[0][1:].split('.')[1]
             image_name = f'non_panda_{uuid.uuid1()}.{extension}'
@@ -162,10 +158,6 @@ def upload_analysed_images():
         
         clear_uploads_folder()
 
-        #TODO ----
-        #get back the blob link 
-        #insert row into database for the panda and non panda images
-
         return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 
@@ -179,8 +171,12 @@ def upload():
     global non_panda_files
     global camera_ID
     labels = model_setup()
+    list_of_cameras = ["0010","0011","0012","0013"]
     if request.method == 'POST':
-        camera_ID = request.form.get('cameraID')
+        panda_files = []
+        non_panda_files = []
+        camera_ID = request.form["cameraChoice"]
+
         uploaded_files = request.files.getlist("file")
         total_images = len(uploaded_files)
         filepaths = []
@@ -220,7 +216,7 @@ def upload():
         true_positives=int((len(panda_files)/total_images)*100)
         false_positives = 100 - true_positives
 
-    return render_template("upload_pics.html",message=message,true_positives=true_positives,false_positives=false_positives,panda_files=panda_files,non_panda_files=non_panda_files,total_images=total_images, user=session["user"], value="upload")
+    return render_template("upload_pics.html",message=message,list_of_cameras=list_of_cameras,true_positives=true_positives,false_positives=false_positives,panda_files=panda_files,non_panda_files=non_panda_files,total_images=total_images, user=session["user"], value="upload")
 
 @app.route('/viewPics')
 def viewPics():

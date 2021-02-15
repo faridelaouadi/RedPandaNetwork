@@ -14,15 +14,58 @@
 
        <form action="{{ url_for('upload') }}" onsubmit="loading();" method="post" id="upload_images_form" autocomplete="off" enctype=multipart/form-data>
           
-        <div class="form-group row autocomplete">
-              <label class="col-lg-3 col-form-label form-control-label">Camera ID</label>
-              <div class="col-lg-9">
-                  <input type="text" class="form-control form-control-rounded" id="cameraNumberInput" name="cameraID" form="upload_images_form" placeholder="e.g. 0010" required>
-                  <!--<input name="camera_ID" form="upload_images_form" class="form-control" type="text" required>-->
+        <!-- <div class="form-group row autocomplete"> -->
+          <div class="form-group row ">
+              <label class="col-lg-1 col-form-label form-control-label">Camera ID</label>
+              <div class="col-lg-4">
+                <div style="background-color:rgba(236, 133, 133, 0.424);padding:10px;border-radius:10px; width: 90%; ">
+                  {% for camera in list_of_cameras %}
+                  <div class="form-check">
+                  {% if loop.index0 == 0 %}
+                    <input class="form-check-input" type="radio" name="cameraChoice" id="cameraChoice_{{camera}}" value="{{camera}}" checked>
+                  {% else %}
+                  <input class="form-check-input" type="radio" name="cameraChoice" id="cameraChoice_{{camera}}" value="{{camera}}">
+                  {% endif %}
+                    <label class="form-check-label" style="font-size: 15px;" for="cameraChoice_{{camera}}">
+                      Camera ID : {{camera}}
+                    </label>
+                  </div>
+                  {% endfor %}
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="cameraChoice" id="cameraChoice_other" value="other">
+                    <label class="form-check-label" style="font-size: 15px;" for="cameraChoice_other">
+                      Other
+                    </label>
+                  </div>
+                </div>
+                  <!-- <input type="text" class="form-control form-control-rounded" id="cameraNumberInput" name="cameraID" form="upload_images_form" placeholder="e.g. 0010" required> -->
+              </div>
+              <div class="col-lg-7">
+                <div class="custom-file-container" data-upload-id="myUniqueUploadId">
+                  <label>Upload File
+                      <a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image">&times;</a></label>
+                  <label class="custom-file-container__custom-file">
+                      <input
+                          form="upload_images_form"
+                          type="file"
+                          class="custom-file-container__custom-file__custom-file-input"
+                          accept="*"
+                          multiple
+                          aria-label="Choose File"
+                          required
+                          name=file
+                      />
+                    
+                      <span
+                          class="custom-file-container__custom-file__custom-file-control"
+                      ></span>
+                  </label>
+                  <div class="custom-file-container__image-preview" style="overflow: hidden;"></div>
+              </div>
               </div>
           </div>
 
-        <div class="form-group row">
+        <!-- <div class="form-group row">
           <label class="col-lg-4 col-form-label form-control-label">Choose files</label>
           <div class="col-lg-8">
             <div class="custom-file-container" data-upload-id="myUniqueUploadId">
@@ -47,7 +90,7 @@
               <div class="custom-file-container__image-preview" style="overflow: hidden;"></div>
           </div>
           </div>
-      </div>
+      </div> -->
 
         
         <div class="form-group row">
