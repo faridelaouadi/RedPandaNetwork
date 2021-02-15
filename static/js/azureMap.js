@@ -1,5 +1,6 @@
 var map;
-var datasource, popup;
+var datasource, popup, pandaSymbolLayer, cameraSymbolLayer, heatmap_layer
+var cameras = ['0010', '0011', '0012', '0013'];
 
 function GetMap() {
     //Initialize a map instance.
@@ -81,7 +82,7 @@ function GetMap() {
         panda_datasource.add([panda1,panda2,panda3,panda4,panda5,panda6,panda7,panda8,panda9,panda10,panda11,panda12]);
 
         //Basically adding the image to the points
-        var cameraSymbolLayer = new atlas.layer.SymbolLayer(camera_datasource, null, {
+        cameraSymbolLayer = new atlas.layer.SymbolLayer(camera_datasource, null, {
             iconOptions: {
             image: 'camera_icon',
             size: 0.1
@@ -98,20 +99,22 @@ function GetMap() {
                 }
         });
 
-        var pandaSymbolLayer = new atlas.layer.SymbolLayer(panda_datasource, null, {
+        pandaSymbolLayer = new atlas.layer.SymbolLayer(panda_datasource, null, {
             iconOptions: {
             image: 'panda_icon',
             size: 0.2
             },
         });
 
-        map.layers.add(new atlas.layer.HeatMapLayer(panda_datasource, null, {
+        heatmap_layer = new atlas.layer.HeatMapLayer(panda_datasource, null, {
           //Set the weight to the point_count property of the data points.
           weight: ['get', 'point_count'],
 
           //Optionally adjust the radius of each heat point.
           radius: 40
-      }), 'labels');
+      }), 'labels'
+
+        map.layers.add(heatmap_layer);
 
         
         map.layers.add(pandaSymbolLayer);
@@ -171,6 +174,27 @@ function GetMap() {
         });
         });
     }
+
+    function filterSymbols(elm, cameraID) {
+      //Set the visibility of the layer.
+      console.log("we are filtering")
+      if (elm.checked) {
+          //Add the category to the categories array.
+          cameras.push(cameraID);
+      } else {
+          //Remove the category to the categories array.
+          cameras.splice(cameras.indexOf(cameraID), 1);
+      }
+
+      //Create a filter that grabs the category of each point and checks that it is in the array of categories.
+      var filter = ['in', ['get', 'cameraID'], ['literal', cameras]];
+
+      //Update the filter in the layer.
+      cameraSymbolLayer.setOptions({
+          filter: filter
+      });
+
+  }
 
 
 
