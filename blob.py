@@ -2,6 +2,7 @@ import os, uuid
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, generate_blob_sas, AccountSasPermissions
 
 def upload_image_to_container(container_name,image_name,filepath):
+    #COMPRESS THE IMAGE BEFORE YOU SEND IT
     connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
     blob_service_client = BlobServiceClient.from_connection_string(connect_str)
     container = ContainerClient.from_connection_string(connect_str, container_name)

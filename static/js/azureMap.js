@@ -131,13 +131,33 @@ function GetMap() {
                 if (JSON.parse(text)['success']){
                   var urls = JSON.parse(text)['urls']
                   $('#total-pics-list').html("Total pics : " + urls.length);
+                  var number_of_pandas = 0;
+                  var number_of_non_pandas = 0;
                   for (imageURL in urls){
                     if (imageURL == 0){
-                      $('#total-pics .carousel-inner').append(`<div class='carousel-item active'> <img src='${urls[imageURL]}' class='d-block w-100'></div>`)
+                      $('#total-pics .carousel-inner').append(`<div class='carousel-item active'> <img src='${urls[imageURL][0]}' class='d-block w-100'></div>`)
                     }else{
-                      $('#total-pics .carousel-inner').append(`<div class='carousel-item'> <img src='${urls[imageURL]}' class='d-block w-100'></div>`)
+                      $('#total-pics .carousel-inner').append(`<div class='carousel-item'> <img src='${urls[imageURL][0]}' class='d-block w-100'></div>`)
+                    }
+                    if (urls[imageURL][1]){
+                      if (number_of_pandas == 0){
+                        $('#panda-pics .carousel-inner').append(`<div class='carousel-item active'> <img src='${urls[imageURL][0]}' class='d-block w-100'></div>`)
+                      }else{
+                        $('#panda-pics .carousel-inner').append(`<div class='carousel-item'> <img src='${urls[imageURL][0]}' class='d-block w-100'></div>`)
+                      }
+                      number_of_pandas += 1
+                      
+                    }else{
+                      if (number_of_non_pandas == 0){
+                        $('#non-panda-pics .carousel-inner').append(`<div class='carousel-item active'> <img src='${urls[imageURL][0]}' class='d-block w-100'></div>`)
+                      }else{
+                        $('#non-panda-pics .carousel-inner').append(`<div class='carousel-item'> <img src='${urls[imageURL][0]}' class='d-block w-100'></div>`)
+                      }
+                      number_of_non_pandas += 1
                     }
                   }
+                  $('#panda-pics-list').html("Total Pandas Spotted : " + number_of_pandas);
+                  $('#non-panda-pics-list').html("False Positives : " + number_of_non_pandas);
                   $(properties.modalLink).modal('show')
                 }else{
                   alert("No images found!")

@@ -4,6 +4,8 @@ app-config==1.0.1
 astunparse==1.6.3
 async-timeout==3.0.1
 attrs==20.3.0
+azure-core==1.11.0
+azure-storage-blob==12.7.1
 beautifulsoup4==4.9.3
 boto==2.49.0
 bs4==0.0.1
@@ -25,12 +27,14 @@ grpcio==1.32.0
 h5py==2.10.0
 idna==2.10
 importlib-metadata==3.4.0
+isodate==0.6.0
 itsdangerous==1.1.0
 Jinja2==2.11.2
 Keras-Preprocessing==1.1.2
 Markdown==3.3.3
 MarkupSafe==1.1.1
 msal==1.8.0
+msrest==0.6.21
 multidict==5.1.0
 numpy==1.19.5
 oauthlib==3.1.0

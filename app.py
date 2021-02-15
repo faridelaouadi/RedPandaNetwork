@@ -21,6 +21,7 @@ Session(app)
 # generate http scheme when this sample is running on localhost,
 # and to generate https scheme when it is deployed behind reversed proxy.
 # See also https://flask.palletsprojects.com/en/1.0.x/deploying/wsgi-standalone/#proxy-setups
+
 from werkzeug.middleware.proxy_fix import ProxyFix
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
@@ -71,16 +72,14 @@ def camera_images(camera_id):
                 permission=AccountSasPermissions(read=True),
                 expiry=datetime.utcnow() + timedelta(hours=1)
             )
-
+            panda = True if blob_name[0] != 'n' else False
             url_with_sas = f"{url}?{sas_token}"
-            image_URLs.append(url_with_sas)
+            image_URLs.append((url_with_sas,panda))
         return json.dumps({'success':True, "urls":image_URLs}), 200, {'ContentType':'application/json'}
     except:
         print("AN EXCEPTION OCCURED")
         return json.dumps({'success':False})
     
-    
-
 
 def break_up_filepaths(filepaths,divisor):
     number_of_lists = ( len(filepaths) // divisor ) + 1# 11//5 = 2
