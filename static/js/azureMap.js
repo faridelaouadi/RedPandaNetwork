@@ -1,5 +1,5 @@
 var map;
-var datasource, popup, pandaSymbolLayer, cameraSymbolLayer, heatmap_layer
+var datasource, popup, pandaSymbolLayer, cameraSymbolLayer, heatmap_layer, cameras
 
 async function retrieveIconData(){
   const camera_list_response = await fetch(`/getCameraList`)
@@ -14,6 +14,8 @@ async function retrieveIconData(){
 async function GetMap() {
     response = await retrieveIconData()
     camera_locations = response[0]["camera_list"]
+    cameras = []
+
     panda_sightings = response[1]["sightings_list"]
     //Initialize a map instance.
     map = new atlas.Map('myMap', {
@@ -66,6 +68,7 @@ async function GetMap() {
         for (camera in camera_locations){
           //console.log(camera_locations[camera])
           var new_camera = new atlas.data.Feature(new atlas.data.Point([camera_locations[camera][1],camera_locations[camera][2]]), {modalLink:'#cameraModal', cameraID: camera_locations[camera][0], category:"camera"});
+          cameras.push(camera_locations[camera][0])
           camera_location_list.push(new_camera)
         }
         // var camera1 = new atlas.data.Feature(new atlas.data.Point([85.331,27.72]), {modalLink:'#cameraModal', cameraID: '0010', category:"camera"});
@@ -214,6 +217,7 @@ async function GetMap() {
     function filterSymbols(elm, cameraID) {
       //Set the visibility of the layer.
       console.log("we are filtering")
+      console.log(cameraID)
       if (elm.checked) {
           //Add the category to the categories array.
           cameras.push(cameraID);
