@@ -107,7 +107,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ url_for('add_camera') }}" method="post" id="add_camera_form" autocomplete="off">
+        <form action="{{ url_for('add_camera') }}" onsubmit="return validateAddCameraForm({{camera_list}})" method="post" id="add_camera_form" autocomplete="off">
           <div class="form-group row">
             <label class="col-sm-3 col-form-label" style="color: black;">Current Cameras</label>
             <div class="col-sm-9">
@@ -176,6 +176,22 @@
         $('#panda-pics .carousel-inner').html('');
         $('#non-panda-pics .carousel-inner').html('');
     });
+
+    function validateAddCameraForm(camera_list){
+      var proposed_camera_ID = $("#cameraID").val();
+      current_cameras = []
+      console.log("JINJA IN JS");
+      for (camera in camera_list){
+        current_cameras.push(camera_list[camera][0])
+      }
+      if (current_cameras.includes(proposed_camera_ID)){
+        return True
+      }else{
+        alert("Value already exists for camera ID");
+        return false
+      }
+
+    }
 </script>
 
 {% endblock %}
