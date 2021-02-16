@@ -99,6 +99,31 @@
         classify_Panda( ui.draggable );
       }
     });
+
+    //if the user wants to upload the images to the server after correcting the classification, do this.
+  $("#upload_images").click(function(){
+        // $("input").prop('disabled', true);
+        $("#loading").show();
+        $("#wrapper").hide();  
+        $.ajax({
+          type: 'POST',
+          url: "{{url_for('upload_analysed_images')}}",
+          data: JSON.stringify (movement_tracker),
+          success: function(response){
+                      //$('.alert').alert()
+                      window.location.href = "{{url_for('upload')}}"
+                  },
+          error: function(error){
+                    alert('Failed...try again!')
+                  },
+          complete: function(){
+                    $("#loading").hide();
+                    
+                  },
+          contentType: "application/json",
+          dataType: 'json'
+      });
+      });
  
     // move to non panda zone
     function classify_notPanda( $item ) {
@@ -118,24 +143,6 @@
       });
     }
 
-    //if the user wants to upload the images to the server after correcting the classification, do this.
-    $("#upload_images").click(function(){
-      $("input").prop('disabled', true);
-      $.ajax({
-        type: 'POST',
-        url: "{{url_for('upload_analysed_images')}}",
-        data: JSON.stringify (movement_tracker),
-        success: function(response){
-                    //$('.alert').alert()
-                    window.location.href = "{{url_for('upload')}}"
-                 },
-        error: function(error){
-                  alert('Failed...try again!')
-                },
-        contentType: "application/json",
-        dataType: 'json'
-    });
-    });
  
  
     // Resolve the icons behavior with event delegation

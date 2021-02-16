@@ -6,7 +6,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <h5 class="modal-title" id="cameraModalTitle"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -74,7 +74,7 @@
   
   
         <div class="modal-footer">
-            <a href="#"><button type="button" class="btn btn-danger" >Upload pictures</button></a>
+            <a href="{{url_for('upload')}}"><button type="button" class="btn btn-danger" >Upload pictures</button></a>
         </div>
       </div>
     </div>
@@ -96,6 +96,54 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="editCamerasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Camera</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ url_for('add_camera') }}" method="post" id="add_camera_form" autocomplete="off">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" style="color: black;">Current Cameras</label>
+            <div class="col-sm-9">
+              {% for camera in camera_list %}
+                <span class="badge badge-danger">Camera {{camera[0]}}</span>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-3 col-form-label" style="color: black;">Camera ID</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="cameraID" style="background-color: rgba(51, 38, 38, 0.424);" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="col-sm-3 col-form-label" style="color: black;">Location</label>
+            <div class="col">
+              <input type="text" class="form-control" name="lat" placeholder="Latitude" style="background-color: rgba(51, 38, 38, 0.424);" required>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" name="long" placeholder="Longitude" style="background-color: rgba(51, 38, 38, 0.424);" required>
+            </div>
+          </div>
+          
+        
+        
+        
+      </div>
+      <div class="modal-footer">
+        <input type="submit" form="add_camera_form" class="btn btn-danger" value="Add">
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
 
 <div class="col-lg-12">
     <div class="card">
@@ -103,11 +151,12 @@
 
         <div  style="width: 100%;height: 85vh;">
           <div id="myMap"></div>
-          <div style="position:absolute;top:20px;left:20px;background-color:rgba(236, 133, 133, 0.424);padding:10px;border-radius:10px; width:25%">
+          <div style="position:absolute;top:20px;left:20px;background-color:rgba(236, 133, 133, 0.424);padding:10px;border-radius:10px; width:18%">
             {% for camera in camera_list %}
                 <input type="checkbox" checked="checked" onclick="filterSymbols(this, '{{camera[0]}}')" /> Camera {{camera[0]}}<br />
-    
             {% endfor %}
+            <button type="button" class="btn btn-danger btn-sm" style="float: right;" data-toggle="modal" data-target="#editCamerasModal">Add Camera</button>
+            
           </div>
       </div>
 

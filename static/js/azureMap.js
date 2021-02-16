@@ -103,8 +103,6 @@ async function GetMap() {
         // var panda11 = new atlas.data.Feature(new atlas.data.Point([84.271,27.72]), {category:"panda"});
         // var panda12 = new atlas.data.Feature(new atlas.data.Point([84.331,27.68]), {category:"panda"});
 
-        
-        
 
         camera_datasource.add(camera_location_list);
         //Basically adding the image to the points
@@ -152,7 +150,7 @@ async function GetMap() {
             //Get custom properties on the marker
             var properties = e.shapes[0].getProperties();
             console.log(properties)
-            $('.modal-title').html("Camera ID : " + properties.cameraID);
+            $('#cameraModalTitle').html("Camera ID : " + properties.cameraID);
             
             fetch(`/camera_images/${properties.cameraID}`)
             .then(function (response) {

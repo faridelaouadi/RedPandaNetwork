@@ -178,6 +178,16 @@ def upload_analysed_images():
 
         return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
+@app.route('/add_camera', methods=["POST"])
+def add_camera():
+    camera_ID = request.form["cameraID"]
+    #Commenting these two lines for demonstration purposes
+    #latitude = request.form["lat"]
+    #longitude = request.form["long"]
+    latitude = round(random.uniform(84.1,86.9),3)
+    longitude = round(random.uniform(27.1,28.6),3)
+    add_new_camera(camera_ID,latitude,longitude)
+    return redirect(url_for("home"))
 
 @app.route('/upload', methods=["GET","POST"])
 def upload():
@@ -189,7 +199,8 @@ def upload():
     global non_panda_files
     global camera_ID
     labels = model_setup()
-    list_of_cameras = ["0010","0011","0012","0013"]
+    camera_data = get_all_cameras()
+    list_of_cameras = [camera[0] for camera in camera_data]
     if request.method == 'POST':
         panda_files = []
         non_panda_files = []
