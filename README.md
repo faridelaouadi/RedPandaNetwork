@@ -33,4 +33,4 @@ Backlog
 Extra
 -----
 
-Full Video demonstration : (Coming soon)
+Full Video demonstration : (https://youtu.be/RTiv9G_X0rY)

@@ -185,10 +185,11 @@
         current_cameras.push(camera_list[camera][0])
       }
       if (current_cameras.includes(proposed_camera_ID)){
-        return True
-      }else{
         alert("Value already exists for camera ID");
         return false
+        
+      }else{
+        return True
       }
 
     }
