@@ -55,7 +55,7 @@ async function GetMap() {
         map.sources.add(camera_datasource);
         map.sources.add(panda_datasource);
 
-        var panda_img = "https://raw.githubusercontent.com/faridelaouadi/LeetCode/master/red_panda-removebg-preview.png"
+        var panda_img = "https://redpanda.blob.core.windows.net/other/logo.png"
         var camera_img = 'https://cdn.iconscout.com/icon/free/png-512/apple-camera-493147.png'
         
         map.imageSprite.add('camera_icon', camera_img)
