@@ -60,14 +60,14 @@ def getCameraList():
 
 @app.route('/getSightings', methods=['GET'])
 def getSightings():
+    #returns a list of all panda sightings
     sightings_list = get_all_sightings()
     return json.dumps({'success':True, "sightings_list":sightings_list}), 200, {'ContentType':'application/json'}
 
 @app.route('/camera_images/<camera_id>', methods=['GET'])
 def camera_images(camera_id):
-    print(f"Getting images!!!")
     account_name="redpanda"
-    account_key="vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w=="
+    account_key= os.getenv("AZURE_ACCOUNT_KEY")
     connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
     container_name = camera_id
     try:
@@ -85,23 +85,12 @@ def camera_images(camera_id):
                 permission=AccountSasPermissions(read=True),
                 expiry=datetime.utcnow() + timedelta(hours=1)
             )
-            panda = True if blob_name[0] != 'n' else False
+            panda = True if blob_name[0] != 'n' else False #the non panda images are named "non-panda..."
             url_with_sas = f"{url}?{sas_token}"
             image_URLs.append((url_with_sas,panda))
         return json.dumps({'success':True, "urls":image_URLs}), 200, {'ContentType':'application/json'}
     except:
-        print("AN EXCEPTION OCCURED")
         return json.dumps({'success':False})
-    
-def break_up_filepaths(filepaths,divisor):
-    number_of_lists = ( len(filepaths) // divisor ) + 1# 11//5 = 2
-    list_of_lists = []
-    counter = 0
-    for i in range(number_of_lists):
-        sub_list = filepaths[counter:counter+divisor]
-        list_of_lists.append(sub_list)
-        counter += divisor
-    return list_of_lists
 
 panda_files = []
 non_panda_files = []

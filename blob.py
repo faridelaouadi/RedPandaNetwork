@@ -56,5 +56,3 @@ def upload_to_other(image_name,filepath):
     except:
         table_service.create_table('others')
         table_service.insert_entity('others', new_other)
-
-    #put a row into the other table
