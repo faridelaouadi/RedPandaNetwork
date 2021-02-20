@@ -154,13 +154,3 @@ async def main(filepaths,labels):
     results = await asyncio.gather(*tasks)
     return results
 
-# if __name__ == "__main__":
-#     filepaths = []
-#     labels = model_setup()
-#     for i in range(1,8):
-#         filepaths.append(f"./static/images/{i}.JPG")
-#     for i in range(1,9):
-#         filepaths.append(f"./static/images/panda+nonpanda/test_set/{i}.jpeg")
-#     print(filepaths)
-#     asyncio.run(main(filepaths,labels))
-

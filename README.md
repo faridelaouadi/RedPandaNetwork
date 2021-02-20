@@ -5,9 +5,9 @@
 
 Background
 ----------
-- Project 15​ from Microsoft is on a mission to accelerate innovation in environmental conservation and ecological sustainability. Cloud computing, Internet of Things (IoT) and Artificial Intelligence (AI) bring great opportunity to drive advancements in a myriad of sustainability efforts including preserving biodiversity and protecting critical habitat.
+- [Project 15​](http://aka.ms/project15) from Microsoft is on a mission to accelerate innovation in environmental conservation and ecological sustainability. Cloud computing, Internet of Things (IoT) and Artificial Intelligence (AI) bring great opportunity to drive advancements in a myriad of sustainability efforts including preserving biodiversity and protecting critical habitat.
 
-- As part of the UCL IXN, I had the opportunity to work alongside Microsoft to create a web app for the "Red Panda Network" to streamline major ineffeciencies in their workflow. 
+- As part of the UCL IXN, I had the opportunity to work alongside Microsoft to create a web app for the ["Red Panda Network"](https://www.redpandanetwork.org/) to streamline major ineffeciencies in their workflow. 
 
 Current Progress
 ----------------
@@ -17,15 +17,15 @@ Current Progress
 - Web App Design adhering to Don Norman's design principles and Preece's Interaction design principles
 - Azure map with clickable icons for camera traps 
 - Web scraper to gather training data for red panda classifier (scrape.py)
-- Red panda classifier using https://www.customvision.ai/ and script for inference
-- Web app hosted on Azure using Azure app service (https://redpandanetwork.azurewebsites.net/)
+- Red panda classifier using [Custom Vision](https://www.customvision.ai/) and script for inference
+- Web app hosted on Azure using Azure app service [Click to view](https://redpandanetwork.azurewebsites.net/)
 - CI/CD workflow using Github and Azure Pipelines 
 - Asynchronous analysis of uploaded images (max of 10 per batch)
+- Upload new images using Azure blob storage
 
 Backlog 
 --------
-- Upload new images using Azure blob storage
-- API to retrieve data for each camera 
+
 - Unit tests using Pytest and Selenium
 - Code Refactoring
 - Meeting with Red panda network
@@ -33,4 +33,4 @@ Backlog
 Extra
 -----
 
-Full Video demonstration : (https://youtu.be/RTiv9G_X0rY)
+Full Video demonstration : [Click to view](https://youtu.be/RTiv9G_X0rY)
