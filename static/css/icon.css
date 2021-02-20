@@ -1,0 +1,51 @@
+@font-face {
+    font-family: 'Material-Design-Iconic-Font';
+    src: url('../fonts/Material-Design-Iconic-Font.woff2?v=2.2.0') format('woff2'), url('../fonts/Material-Design-Iconic-Font.woff?v=2.2.0') format('woff'), url('../fonts/Material-Design-Iconic-Font.ttf?v=2.2.0') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
+  .zmdi {
+    display: inline-block;
+    font: normal normal normal 14px/1 'Material-Design-Iconic-Font';
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+
+.zmdi-home:before {
+        content: '\f175';
+    }
+
+  .zmdi-camera-add:before {
+    content: '\f283';
+  }
+
+  @font-face {
+    font-family: 'simple-line-icons';
+    src: url('../fonts/Simple-Line-Icons.eot?v=2.4.0');
+    src: url('../fonts/Simple-Line-Icons.eot?v=2.4.0#iefix') format('embedded-opentype'), url('../fonts/Simple-Line-Icons.woff2?v=2.4.0') format('woff2'), url('../fonts/Simple-Line-Icons.ttf?v=2.4.0') format('truetype'), url('../fonts/Simple-Line-Icons.woff?v=2.4.0') format('woff'), url('../fonts/Simple-Line-Icons.svg?v=2.4.0#simple-line-icons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  .icon-menu{
+    font-family: 'simple-line-icons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .icon-menu:before {
+    content: "\e601";
+  }
+
