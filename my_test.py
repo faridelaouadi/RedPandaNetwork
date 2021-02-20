@@ -1,4 +1,4 @@
-from app import app
+from app import app, get_modified_lists
 from unittest.mock import patch
 import unittest
 
@@ -11,10 +11,6 @@ class FlaskTest(unittest.TestCase):
         response = tester.get("/")
         status_code = response.status_code
         self.assertEqual(status_code,302)
-    
-    #test /home status code 200
-
-    #test /home content is html 
 
     #test /getCameraList is json and status code 200 and returns a non empty list 
     def test_get_camera_list(self):
@@ -45,13 +41,30 @@ class FlaskTest(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.get("/camera_images/0101")
         status_code = response.status_code
-        self.assertEqual(status_code,200)
+        self.assertEqual(status_code,404)
 
-    #test getModifiedList using normal function unittest 
+    #test getModifiedList 
+    def test_get_modified_list_no_changes(self):
+        list_a = [1,2,3,4,5]
+        list_b = [6,7,8,9,10]
 
-    #
+        changes = ["p_0", "p_0", "np_1", "np_1"]
+
+        modified_a, modified_b = get_modified_lists(list_a,list_b,changes)
+
+        self.assertTrue(modified_a==list_a and list_b==modified_b) #no changes to the lists
+
+    def test_get_modified_list_1_switch(self):
+        list_a = [1,2,3,4,5]
+        list_b = [6,7,8,9,10]
+
+        changes = ["p_0"]
+
+        modified_a, modified_b = get_modified_lists(list_a,list_b,changes)
+
+        self.assertTrue(1 in modified_b) #the number 1 gets moved to the other list
     
-        
+    
 
 if __name__ == "__main__":
     unittest.main()

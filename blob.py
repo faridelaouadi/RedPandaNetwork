@@ -17,7 +17,7 @@ def lossy_compress(image_name,filepath):
 
 def upload_image_to_container(container_name,image_name,filepath):
     compressed_image_filepath = lossy_compress(image_name,filepath) #compress the image - images from camera traps are very large!
-    connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+    connect_str = "DefaultEndpointsProtocol=https;AccountName=redpanda;AccountKey=vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w==;EndpointSuffix=core.windows.net"
     blob_service_client = BlobServiceClient.from_connection_string(connect_str)
     container = ContainerClient.from_connection_string(connect_str, container_name)
     try:
@@ -32,7 +32,7 @@ def upload_image_to_container(container_name,image_name,filepath):
     return blob_client.url #return the url link to access the image
 
 def get_images_from_container(container_name):
-    connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+    connect_str = "DefaultEndpointsProtocol=https;AccountName=redpanda;AccountKey=vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w==;EndpointSuffix=core.windows.net"
     container = ContainerClient.from_connection_string(conn_str=connect_str, container_name=container_name)
 
     blob_list = container.list_blobs()

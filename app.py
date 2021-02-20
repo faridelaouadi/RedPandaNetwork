@@ -88,7 +88,7 @@ def camera_images(camera_id):
             image_URLs.append((url_with_sas,panda))
         return json.dumps({'success':True, "urls":image_URLs}), 200, {'ContentType':'application/json'}
     except:
-        return json.dumps({'success':False})
+        return json.dumps({'success':False}), 404
 
 panda_files = []
 non_panda_files = []
