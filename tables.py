@@ -4,7 +4,7 @@ import os
 
 account_key=os.getenv("AZURE_TABLE_ACCOUNT_KEY")
 
-table_service = TableService(account_name='redpanda', account_key=account_key)
+table_service = TableService(account_name='redpanda', account_key="vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w==")
 
 def add_new_camera(cameraID, latitude, longitude):
     new_camera = {'PartitionKey': cameraID, 'RowKey': cameraID,'lat':latitude,'long':longitude}

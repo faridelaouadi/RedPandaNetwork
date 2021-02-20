@@ -1,12 +1,10 @@
 import uuid
-import requests
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 import app_config
 from werkzeug.utils import secure_filename
 import os
-import time
 import asyncio
 import json
 from async_predict_local import *
