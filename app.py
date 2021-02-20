@@ -66,7 +66,7 @@ def getSightings():
 def camera_images(camera_id):
     account_name="redpanda"
     account_key= os.getenv("AZURE_ACCOUNT_KEY")
-    connect_str = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+    connect_str = "DefaultEndpointsProtocol=https;AccountName=redpanda;AccountKey=vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w==;EndpointSuffix=core.windows.net"
     container_name = camera_id
     try:
         container = ContainerClient.from_connection_string(conn_str=connect_str, container_name=container_name)
