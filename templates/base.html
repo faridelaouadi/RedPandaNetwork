@@ -14,161 +14,25 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" />
   <!-- Icons CSS-->
   <link href="../static/css/icons.css" rel="stylesheet" type="text/css"/>
+  
   <!-- Sidebar CSS-->
   <link href="../static/css/sidebar-menu.css" rel="stylesheet"/>
+  
   <!-- Bootstrap core CSS-->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">  
   <link rel="stylesheet" type="text/css" href="https://unpkg.com/file-upload-with-preview@4.1.0/dist/file-upload-with-preview.min.css"/>
   <script src="https://unpkg.com/file-upload-with-preview@4.1.0/dist/file-upload-with-preview.min.js"></script>
   
   <!-- Custom Style-->
-  <!-- <link href="../static/css/image-uploader.css" rel="stylesheet"/>-->
   <link href="../static/css/app-style.css" rel="stylesheet"/>
   <link href="../static/css/view_pics.css" rel="stylesheet"/>
-  <link href="../static/css/autocomplete.css" rel="stylesheet"/>
   <link href="../static/css/loading.css" rel="stylesheet"/>
 
   <!-- Panda - Not Panda draggable interface CSS and JS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" integrity="sha512-okE4owXD0kfXzgVXBzCDIiSSlpXn3tJbNodngsTnIYPJWjuYhtJ+qMoc0+WUwLHeOwns0wm57Ka903FqQKM1sA==" crossorigin="anonymous" />
-  <style>
-    /* CSS code to define how the  */
-  #panda_zone { float: left; width: 100%; min-height: 18em; }
-  /* .gallery.custom-state-active { background: #eee; } */
-  .panda_zone.custom-state-active { background: rgba(255, 208, 0, 0.075); }
-  .panda_zone li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
-  .panda_zone li h5 { margin: 0 0 0.4em; cursor: move; }
-  .panda_zone li a { float: right; }
-  .panda_zone li img { width: 100%; cursor: move; }
-
-  #non_panda_zone { float: right; width: 100%; min-height: 18em; padding: 1%;}
-  /* .gallery.custom-state-active { background: #eee; } */
-  .non_panda_zone.custom-state-active { background: rgba(255, 208, 0, 0.075); }
-  .non_panda_zone li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
-  .non_panda_zone li h5 { margin: 0 0 0.4em; cursor: move; }
-  .non_panda_zone li a { float: right; }
-  .non_panda_zone li img { width: 100%; cursor: move; }
- 
-  </style>
+  <link href="../static/css/draggable.css" rel="stylesheet"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-  $( function() {
- 
-    // There's the gallery and the trash
-    var $panda_zone = $( "#panda_zone" );
-    var $non_panda_zone = $( "#non_panda_zone" );
-    var movement_tracker = [] //a list keeping track of all image movement 
-
- 
-    // Let the gallery items be draggable
-    $( "li", $panda_zone ).draggable({
-      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
-      revert: "invalid", // when not dropped, the item will revert back to its initial position
-      containment: "document",
-      helper: "clone",
-      cursor: "move"
-    });
-
-    // Let the gallery items be draggable
-    $( "li", $non_panda_zone ).draggable({
-      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
-      revert: "invalid", // when not dropped, the item will revert back to its initial position
-      containment: "document",
-      helper: "clone",
-      cursor: "move"
-    });
- 
-    // Let the non_panda_zone be droppable, accepting the panda items
-    $non_panda_zone.droppable({
-      accept: "#panda_zone li",
-      classes: {
-        "ui-droppable-active": "custom-state-active"
-      },
-      drop: function( event, ui ) {
-        classify_notPanda( ui.draggable );
-      }
-    });
- 
-    // Let the gallery be droppable as well, accepting items from the non_panda_zone
-    $panda_zone.droppable({
-      accept: "#non_panda_zone li",
-      classes: {
-        "ui-droppable-active": "custom-state-active"
-      },
-      drop: function( event, ui ) {
-        classify_Panda( ui.draggable );
-      }
-    });
-
-    //if the user wants to upload the images to the server after correcting the classification, do this.
-  $("#upload_images").click(function(){
-        // $("input").prop('disabled', true);
-        $("#loading").show();
-        $("#wrapper").hide();  
-        $.ajax({
-          type: 'POST',
-          url: "{{url_for('upload_analysed_images')}}",
-          data: JSON.stringify (movement_tracker),
-          success: function(response){
-                      //$('.alert').alert()
-                      window.location.href = "{{url_for('upload')}}"
-                  },
-          error: function(error){
-                    alert('Failed...try again!')
-                  },
-          complete: function(){
-                    $("#loading").hide();
-                    
-                  },
-          contentType: "application/json",
-          dataType: 'json'
-      });
-      });
- 
-    // move to non panda zone
-    function classify_notPanda( $item ) {
-      movement_tracker.push($item.find('img').attr('id'))
-      console.log(movement_tracker) //this prints out the id of the image that got moved
-      $item.fadeOut(function() {
-        $item.appendTo( $non_panda_zone ).fadeIn();
-      });
-    }
- 
-    // move to panda zone
-    function classify_Panda( $item ) {
-      movement_tracker.push($item.find('img').attr('id'))
-      console.log(movement_tracker) //this prints out the id of the image that got moved
-      $item.fadeOut(function() {
-        $item.appendTo( $panda_zone ).fadeIn();
-      });
-    }
-
- 
- 
-    // Resolve the icons behavior with event delegation
-    $( "ul.panda_zone > li, ul.non_panda_zone > li" ).on( "click", function( event ) {
-      var $item = $( this ),
-        $target = $( event.target );
- 
-      if ( $target.is( "a.ui-icon-trash" ) ) {
-        deleteImage( $item );
-      } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
-        viewLargerImage( $target );
-      } else if ( $target.is( "a.ui-icon-refresh" ) ) {
-        recycleImage( $item );
-      }
- 
-      return false;
-    });
-
-
-
-  } );
-
-  
-
-  </script>
-  
   
 </head>
 
@@ -184,7 +48,6 @@
      <div class="brand-logo">
       <a href="#">
        <img src="../static/images/rpn_logo.png" class="logo-icon" alt="logo icon">
-       <!--<h5 class="logo-text">Welcome Sonam</h5>-->
      </a>
    </div>
    <ul class="sidebar-menu do-nicescrol">
@@ -209,27 +72,6 @@
           <p>Upload New images</p>
         </a>
       </li>
-      <!-- {% if value == "view" %}
-      <li class="active">
-      {% else %}
-      <li>
-      {% endif %}
-        <a href="{{ url_for('viewPics') }}">
-          <i class="zmdi zmdi-view-carousel"></i>
-          <p>View all images</p>
-        </a>
-      </li> -->
-      <!-- {% if value == "report" %}
-      <li class="active">
-      {% else %}
-      <li>
-      {% endif %}
-        <a href="#">
-          <i class="fa fa-exclamation-triangle"></i>
-          <p>Report fault camera</p>
-        </a>
-      </li> -->
-
     </ul>
    
    </div>
@@ -264,8 +106,7 @@
           </a>
         </li>
         <li class="dropdown-divider"></li>
-        <li class="dropdown-item"><a href="#"><i class="icon-settings mr-2"></i>Settings</li></a>
-        <li class="dropdown-divider"></li>
+
         <li class="dropdown-item"><a href="{{ url_for('logout') }}"><i class="icon-power mr-2"></i>Logout</li></a>
       </ul>
     </li>
@@ -297,11 +138,8 @@
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
     <!--End Back To Top Button-->
 	
-	
-   
-  </div><!--End wrapper-->
 
-  
+  </div><!--End wrapper-->
 
   <!-- Bootstrap core JavaScript-->
   <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
@@ -329,10 +167,6 @@
   <!--CSS and JS for Azure Maps-->
   <script src="static/js/azureMap.js"></script>
   <link rel="stylesheet" href="static/css/azureMap.css">
-
-  <!--JS for autocomplete textbox -->
-  <script src="../static/js/autocomplete.js"></script>
-  
   
 </body>
 </html>

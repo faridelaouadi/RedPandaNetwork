@@ -208,7 +208,7 @@
      </div>
   </div>
 
-
+<!-- The JS is here as it uses JINJA syntax  -->
   <script>
     var upload = new FileUploadWithPreview("myUniqueUploadId",{
                 showDeleteButtonOnImages: true,
@@ -222,6 +222,123 @@
 		});	
     
 });
+
+$( function() {
+ 
+ // There's the gallery and the trash
+ var $panda_zone = $( "#panda_zone" );
+ var $non_panda_zone = $( "#non_panda_zone" );
+ var movement_tracker = [] //a list keeping track of all image movement 
+
+
+ // Let the gallery items be draggable
+ $( "li", $panda_zone ).draggable({
+   cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+   revert: "invalid", // when not dropped, the item will revert back to its initial position
+   containment: "document",
+   helper: "clone",
+   cursor: "move"
+ });
+
+ // Let the gallery items be draggable
+ $( "li", $non_panda_zone ).draggable({
+   cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+   revert: "invalid", // when not dropped, the item will revert back to its initial position
+   containment: "document",
+   helper: "clone",
+   cursor: "move"
+ });
+
+ // Let the non_panda_zone be droppable, accepting the panda items
+ $non_panda_zone.droppable({
+   accept: "#panda_zone li",
+   classes: {
+     "ui-droppable-active": "custom-state-active"
+   },
+   drop: function( event, ui ) {
+     classify_notPanda( ui.draggable );
+   }
+ });
+
+ // Let the gallery be droppable as well, accepting items from the non_panda_zone
+ $panda_zone.droppable({
+   accept: "#non_panda_zone li",
+   classes: {
+     "ui-droppable-active": "custom-state-active"
+   },
+   drop: function( event, ui ) {
+     classify_Panda( ui.draggable );
+   }
+ });
+
+
+
+ // move to non panda zone
+ function classify_notPanda( $item ) {
+   movement_tracker.push($item.find('img').attr('id'))
+   console.log(movement_tracker) //this prints out the id of the image that got moved
+   $item.fadeOut(function() {
+     $item.appendTo( $non_panda_zone ).fadeIn();
+   });
+ }
+
+ // move to panda zone
+ function classify_Panda( $item ) {
+   movement_tracker.push($item.find('img').attr('id'))
+   console.log(movement_tracker) //this prints out the id of the image that got moved
+   $item.fadeOut(function() {
+     $item.appendTo( $panda_zone ).fadeIn();
+   });
+ }
+
+ //if the user wants to upload the images to the server after correcting the classification, do this.
+ $("#upload_images").click(function(){
+        // $("input").prop('disabled', true);
+        $("#loading").show();
+        $("#wrapper").hide();  
+        $.ajax({
+          type: 'POST',
+          url: "{{url_for('upload_analysed_images')}}",
+          data: JSON.stringify (movement_tracker),
+          success: function(response){
+                      //$('.alert').alert()
+                      window.location.href = "{{url_for('upload')}}"
+                  },
+          error: function(error){
+                    alert('Failed...try again!')
+                  },
+          complete: function(){
+                    $("#loading").hide();
+                    
+                  },
+          contentType: "application/json",
+          dataType: 'json'
+      });
+      });
+
+
+
+ // Resolve the icons behavior with event delegation
+ $( "ul.panda_zone > li, ul.non_panda_zone > li" ).on( "click", function( event ) {
+   var $item = $( this ),
+     $target = $( event.target );
+
+   if ( $target.is( "a.ui-icon-trash" ) ) {
+     deleteImage( $item );
+   } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+     viewLargerImage( $target );
+   } else if ( $target.is( "a.ui-icon-refresh" ) ) {
+     recycleImage( $item );
+   }
+
+   return false;
+ });
+
+
+
+} );
+
+  
 
   </script>
 

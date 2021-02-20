@@ -1,0 +1,16 @@
+    /* CSS code to define how the  */
+    #panda_zone { float: left; width: 100%; min-height: 18em; }
+    /* .gallery.custom-state-active { background: #eee; } */
+    .panda_zone.custom-state-active { background: rgba(255, 208, 0, 0.075); }
+    .panda_zone li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+    .panda_zone li h5 { margin: 0 0 0.4em; cursor: move; }
+    .panda_zone li a { float: right; }
+    .panda_zone li img { width: 100%; cursor: move; }
+  
+    #non_panda_zone { float: right; width: 100%; min-height: 18em; padding: 1%;}
+    /* .gallery.custom-state-active { background: #eee; } */
+    .non_panda_zone.custom-state-active { background: rgba(255, 208, 0, 0.075); }
+    .non_panda_zone li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+    .non_panda_zone li h5 { margin: 0 0 0.4em; cursor: move; }
+    .non_panda_zone li a { float: right; }
+    .non_panda_zone li img { width: 100%; cursor: move; }
