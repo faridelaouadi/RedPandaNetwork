@@ -123,7 +123,6 @@ def get_modified_lists(panda_files,non_panda_files,changes):
     return modified_panda_files,modified_non_panda_files
 
 def clear_uploads_folder():
-    print("clearing the uploads")
     filelist = [ f for f in os.listdir('./static/uploads/')]
     for f in filelist:
         os.remove(os.path.join('./static/uploads/', f))
@@ -139,14 +138,13 @@ def upload_analysed_images():
         modified_panda_files,modified_non_panda_files = get_modified_lists(panda_files,non_panda_files,changes)
         
         #at this point we have the perfectly classified images for panda and not panda  
-        # 
         # reset both file lists so we dont mess up the other function          
         panda_files = []
         non_panda_files = [] 
 
         for non_panda in modified_non_panda_files:
-            extension = non_panda[0][1:].split('.')[1]
-            image_name = f'non_panda_{uuid.uuid1()}.{extension}'
+            extension = non_panda[0][1:].split('.')[1] #get the file extension e.g jpeg, png
+            image_name = f'non_panda_{uuid.uuid1()}.{extension}' #get a unique image name to push to blob storage
             filepath = non_panda[0]
             if camera_ID != 'other':
                 upload_image_to_container(camera_ID,image_name,filepath)
@@ -203,25 +201,9 @@ def upload():
             filepath = os.path.join('./static/', f"uploads/{filename}")
             file.save(filepath)
             filepaths.append(filepath)
-        
-        '''
-        # the 5 lines below this are for using the external API
-        results = []
-        list_of_lists = break_up_filepaths(filepaths,4) #break up the filepaths into groups of 4
-        for filepaths in list_of_lists:
-            results = results + asyncio.run(main(filepaths))
-            time.sleep(2) #wait 2 seconds before another call'''
-        
-        '''
-        #using local model with async
-        results = []
-        labels = model_setup()
-        for filepath in filepaths:
-            if classify_non_async(filepath, labels) == 'panda':
-                results.append(True)'''
 
         #using async model
-        results = asyncio.run(main(filepaths,labels)) #this is a list of (imageFile,Boolean)
+        results = asyncio.run(main(filepaths,labels)) #this is a list of (imageFile,Boolean,confidence)
         
 
         for (imageFile,classification,confidence) in results:
@@ -235,10 +217,6 @@ def upload():
         false_positives = 100 - true_positives
 
     return render_template("upload_pics.html",message=message,list_of_cameras=list_of_cameras,true_positives=true_positives,false_positives=false_positives,panda_files=panda_files,non_panda_files=non_panda_files,total_images=total_images, user=session["user"], value="upload")
-
-@app.route('/viewPics')
-def viewPics():
-    return render_template("view_pics.html",user=session["user"], value="view")
 
 @app.route(app_config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
 def authorized():
