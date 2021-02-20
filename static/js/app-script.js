@@ -76,7 +76,7 @@ function validateAddCameraForm(camera_list){
     return false
     
   }else{
-    alert(`Current cameras : ${current_cameras} and my proposed id is ${proposed_camera_ID}`)
+    //alert(`Current cameras : ${current_cameras} and my proposed id is ${proposed_camera_ID}`)
     return True
   }
 

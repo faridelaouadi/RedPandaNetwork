@@ -2,7 +2,9 @@ from azure.cosmosdb.table.tableservice import TableService
 from azure.cosmosdb.table.models import Entity
 import os
 
-table_service = TableService(account_name='redpanda', account_key=os.getenv("AZURE_TABLE_ACCOUNT_KEY"))
+account_key=os.getenv("AZURE_TABLE_ACCOUNT_KEY")
+
+table_service = TableService(account_name='redpanda', account_key=account_key)
 
 def add_new_camera(cameraID, latitude, longitude):
     new_camera = {'PartitionKey': cameraID, 'RowKey': cameraID,'lat':latitude,'long':longitude}
