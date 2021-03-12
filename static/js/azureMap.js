@@ -27,7 +27,7 @@ async function GetMap() {
         //Add authentication details for connecting to Azure Maps.
         authOptions: {
         authType: 'subscriptionKey',
-        subscriptionKey: 'Z6miLmU_fd30J0nkg5OuTkviQ6UmhCFCxDyMLMHeRCY'
+        subscriptionKey: '#enter your subscription key here'
     }
     });
 

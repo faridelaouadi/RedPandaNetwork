@@ -64,9 +64,9 @@ def getSightings():
 
 @app.route('/camera_images/<camera_id>', methods=['GET'])
 def camera_images(camera_id):
-    account_name="redpanda"
-    account_key= "vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w=="
-    connect_str = "DefaultEndpointsProtocol=https;AccountName=redpanda;AccountKey=vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w==;EndpointSuffix=core.windows.net"
+    account_name="ACCOUNT NAME HERE"
+    account_key= "ACCOUNT KEY HERE"
+    connect_str = "CONNECTION STRING HERE"
     container_name = camera_id
     try:
         container = ContainerClient.from_connection_string(conn_str=connect_str, container_name=container_name)

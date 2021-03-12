@@ -17,7 +17,7 @@ def lossy_compress(image_name,filepath):
 
 def upload_image_to_container(container_name,image_name,filepath):
     compressed_image_filepath = lossy_compress(image_name,filepath) #compress the image - images from camera traps are very large!
-    connect_str = "DefaultEndpointsProtocol=https;AccountName=redpanda;AccountKey=vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w==;EndpointSuffix=core.windows.net"
+    connect_str = "#ENTER YOUR CONNECTION STRING HERE"
     blob_service_client = BlobServiceClient.from_connection_string(connect_str)
     container = ContainerClient.from_connection_string(connect_str, container_name)
     try:
@@ -32,12 +32,12 @@ def upload_image_to_container(container_name,image_name,filepath):
     return blob_client.url #return the url link to access the image
 
 def get_images_from_container(container_name):
-    connect_str = "DefaultEndpointsProtocol=https;AccountName=redpanda;AccountKey=vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w==;EndpointSuffix=core.windows.net"
+    connect_str = "#ENTER YOUR CONNECTION STRING HERE"
     container = ContainerClient.from_connection_string(conn_str=connect_str, container_name=container_name)
 
     blob_list = container.list_blobs()
     for blob in blob_list:
-        blob_instance = BlobClient.from_connection_string(conn_str=connect_str, container_name="0010", blob_name=blob.name)
+        blob_instance = BlobClient.from_connection_string(conn_str=connect_str, container_name=container_name, blob_name=blob.name)
         with open(f"./static/images/{blob.name}", "wb") as my_blob:
             blob_data = blob_instance.download_blob()
             blob_data.readinto(my_blob)

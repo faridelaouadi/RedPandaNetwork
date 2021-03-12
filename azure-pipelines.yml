@@ -3,6 +3,20 @@
 # Change python version to one thats appropriate for your application.
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
+
+
+
+
+
+'''
+NOTE TO READER
+
+FOLLOW THIS TUTORIAL -> https://docs.microsoft.com/en-gb/azure/devops/pipelines/ecosystems/python-webapp?view=azure-devops
+TO GENERATE YOUR OWN CUSTOM YAML FILE THAT WILL REPLACE THIS BASED ON YOUR AZURE APP SERVICE CONFIGURATION
+
+
+'''
+
 trigger:
 - main
 - master

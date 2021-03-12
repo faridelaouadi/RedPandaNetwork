@@ -2,9 +2,9 @@ from azure.cosmosdb.table.tableservice import TableService
 from azure.cosmosdb.table.models import Entity
 import os
 
-account_key="vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w=="
+account_key="#ACCOUNT_KEY_GOES_HERE"
 
-table_service = TableService(account_name='redpanda', account_key="vSk4SX5tPC6IKz8u4glCHm86bJrjHjnOVrtf9tlclg+EGPiv/7r2CzyFYhW9qZvCpf68JNwuE70yuomAL1iy0w==")
+table_service = TableService(account_name='ACCOUNT_NAME_HERE', account_key="ACCOUNT KEY GOES HERE")
 
 def add_new_camera(cameraID, latitude, longitude):
     new_camera = {'PartitionKey': cameraID, 'RowKey': cameraID,'lat':latitude,'long':longitude}
