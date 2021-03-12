@@ -38,24 +38,24 @@ Full Video demonstration : [Click to view](https://youtu.be/RTiv9G_X0rY)
 How can I run this project?
 -----
 
-###Prerequisites###
+### Prerequisites
 
 - You will need to have an Azure account 
 - Basic understanding of Python 3
 
-####Setting up Active Directory####
+#### Setting up Active Directory
 - To enable signing in using a Microsoft Account, we have to set up the service on your azure portal
 - Follow [this](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-python-webapp) tutorial to get going
 - In the file “app_config.py”, modify the Client_ID, Client_Secret, Redirect_Path with your unique values for your created service.
 - Once this is done, you should now be able to log into the platform using your microsoft account 
 
-####Setting up Azure Map####
+#### Setting up Azure Map
 - To be able to use the interactive map, we need to create an azure map service in the azure portal 
 - Follow [this](https://docs.microsoft.com/en-gb/azure/azure-maps/quick-demo-map-app) tutorial to get going
 - In the file static/js/azureMap.js change the subscriptionKey to your unique subscription key
 - Once this is done, you should now be able to interact with the map
 
-####Setting up Azure storage####
+#### Setting up Azure storage
 - Create a storage account by following [this](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) tutorial
 - Locate your storage account.
 - In the Settings section of the storage account overview, select Access keys. Here, you can view your account access keys and the complete connection string for each key.
@@ -64,7 +64,7 @@ How can I run this project?
 - Replace the “account_key” with this key in tables.py as well as the “account_name” with your account_name. All this information can be found by going to the credentials tab in the account storage.
 - Also replace “account_key”,”account_name” and “connect_str” in app.py
 
-###Getting started###
+### Getting started
 - Download the repo 
 - Follow all the prerequisite steps to set up the azure account with all the relevant services
 - Create a virtual environment and install dependencies in requirements.txt to get all the dependencies required for the project
